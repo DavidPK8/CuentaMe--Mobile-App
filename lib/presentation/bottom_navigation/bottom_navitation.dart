@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../pages/home_screen.dart';
-import '../pages/customize_product_screen.dart';
-import '../pages/cart_screen.dart';
-import '../pages/order_status_screen.dart';
-import '../pages/user_profile_screen.dart';
+import '../screens/home_screen.dart';
+import '../screens/customize_product_screen.dart';
+import '../screens/cart_screen.dart';
+import '../screens/order_status_screen.dart';
+import '../screens/user_profile_screen.dart';
 
 class BottomNavitation extends StatefulWidget {
   @override
@@ -34,8 +34,8 @@ class _BottomNavigationState extends State<BottomNavitation> {
         backgroundColor: const Color.fromRGBO(133, 104, 173, 1),
         centerTitle: true,
         title: Image.asset(
-          'assets/images/facebook.png', // Ruta de la imagen en tu proyecto
-          height: 40, // Ajusta el tamaño de la imagen según sea necesario
+          'assets/images/cuentame_logo.png', // Ruta de la imagen en tu proyecto
+          height: 110, // Ajusta el tamaño de la imagen según sea necesario
         ),
       ),
       body: Container(
