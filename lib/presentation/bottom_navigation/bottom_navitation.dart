@@ -1,3 +1,4 @@
+import 'package:cuentame_tesis/decorations/app_colors.dart';
 import 'package:flutter/material.dart';
 import '../screens/home_screen.dart';
 import '../screens/customize_product_screen.dart';
@@ -31,11 +32,11 @@ class _BottomNavigationState extends State<BottomNavitation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(133, 104, 173, 1),
+        backgroundColor: AppColors.primaryColor,
         centerTitle: true,
         title: Image.asset(
-          'assets/images/cuentame_logo.png', // Ruta de la imagen en tu proyecto
-          height: 110, // Ajusta el tamaño de la imagen según sea necesario
+          'assets/images/cuentame_logo_main.png', // Ruta de la imagen en tu proyecto
+          height: 115, // Ajusta el tamaño de la imagen según sea necesario
         ),
       ),
       body: Container(
@@ -44,8 +45,8 @@ class _BottomNavigationState extends State<BottomNavitation> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFFFFD700), // Amarillo oscuro
-              Color(0xFFFFF8DC), // Amarillo claro
+              AppColors.backgroundcolor_1, // Amarillo oscuro
+              AppColors.backgroundcolor_2, // Amarillo claro
             ],
           ),
         ),
@@ -53,7 +54,7 @@ class _BottomNavigationState extends State<BottomNavitation> {
       ),
       bottomNavigationBar: ClipRRect(
         child: Container(
-          color: const Color.fromRGBO(133, 104, 173, 1),
+          color: AppColors.primaryColor,
           child: BottomNavigationBar(
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
@@ -64,8 +65,8 @@ class _BottomNavigationState extends State<BottomNavitation> {
             ],
             currentIndex: _selectedIndex,
             onTap: _onItemTapped,
-            selectedItemColor: Colors.white,
-            unselectedItemColor: Colors.black,
+            selectedItemColor: Colors.yellow,
+            unselectedItemColor: AppColors.colorWhite,
             backgroundColor: Colors.transparent,
             type: BottomNavigationBarType.fixed,
           ),
