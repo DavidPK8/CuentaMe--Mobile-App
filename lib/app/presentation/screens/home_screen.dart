@@ -1,8 +1,8 @@
 import 'package:cuentame_tesis/authentication/auth_provider.dart';
-import 'package:cuentame_tesis/decorations/app_colors.dart';
-import 'package:cuentame_tesis/decorations/texts/widget_text.dart';
-import 'package:cuentame_tesis/presentation/screens/login_screen.dart';
-import 'package:cuentame_tesis/presentation/screens/register_screen.dart';
+import 'package:cuentame_tesis/app/decorations/app_colors.dart';
+import 'package:cuentame_tesis/app/decorations/texts/widget_text.dart';
+import 'package:cuentame_tesis/app/presentation/screens/login_screen.dart';
+import 'package:cuentame_tesis/app/presentation/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,6 +11,8 @@ class HomeScreen extends StatelessWidget {
     {'name': 'Producto 1', 'image': 'https://via.placeholder.com/150', 'price': '\$10', 'description': 'Descripcion del producto 1...'},
     {'name': 'Producto 2', 'image': 'https://via.placeholder.com/150', 'price': '\$15', 'description': 'Descripcion del producto 2...'},
   ];
+
+  HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -59,19 +61,77 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
+void _showProductDetails(BuildContext context, Map<String, dynamic> product) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: WidgetText(text: product['name'], fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.colorWhite, textAlign: TextAlign.center),
+        backgroundColor: AppColors.primaryColor,
+        content: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.8,  // Ancho de la ventana de diálogo
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.network(
+                product['image'],
+                height: 300,  // Tamaño de la imagen
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+              const SizedBox(height: 10),
+              WidgetText(text: 'Precio: ${product['price']}', fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.colorWhite, textAlign: TextAlign.center),
+              const SizedBox(height: 10),
+              WidgetText(text: product['description'], fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.colorWhite, textAlign: TextAlign.center),
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),  // Bordes redondeados
+          side: const BorderSide(
+            color: Colors.black,  // Color del borde
+            width: 1.25,  // Grosor del borde
+          ),
+        ),
+        actions: [
+          Center(
+            child: TextButton.icon(
+              onPressed: () {
+                final authProvider = Provider.of<AuthProvider>(context, listen: false);
+                if (authProvider.isAuthenticated) {
+                  // Añadir el producto al carrito
+                  Navigator.of(context).pop();
+                } else {
+                  // Mostrar el diálogo de autenticación
+                  _showAuthDialog(context);
+                }
+              },
+              icon: const Icon(Icons.add_shopping_cart, color: AppColors.colorWhite),
+              label: const WidgetText(text: 'Añadir al Carrito', fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.colorWhite, textAlign: TextAlign.center),
+              style: TextButton.styleFrom(
+                backgroundColor: AppColors.cartColor,
+              ),
+            ),
+          ),
+        ],
+      );
+    },
+  );
+}
+
 void _showAuthDialog(BuildContext context) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: WidgetText(
+        title: const WidgetText(
           text: 'Cuenta Requerida',
           fontSize: 22,
           fontWeight: FontWeight.bold,
           color: AppColors.colorBlack,
           textAlign: TextAlign.center,
         ),
-        content: WidgetText(
+        content: const WidgetText(
           text: 'Necesitas una cuenta para añadir productos al carrito.',
           fontSize: 18,
           fontWeight: FontWeight.normal,
@@ -90,7 +150,7 @@ void _showAuthDialog(BuildContext context) {
                     MaterialPageRoute(builder: (context) => LoginScreen()), // Redirige a inicio de sesión
                   );
                 },
-                child: Text(
+                child: const Text(
                   'Inicio de sesión',
                   style: TextStyle(fontSize: 20),
                 ),
@@ -103,7 +163,7 @@ void _showAuthDialog(BuildContext context) {
                     MaterialPageRoute(builder: (context) => RegisterScreen()), // Redirige a registrarse
                   );
                 },
-                child: Text(
+                child: const Text(
                   'Registrarse',
                   style: TextStyle(fontSize: 20),
                 ),
@@ -117,60 +177,3 @@ void _showAuthDialog(BuildContext context) {
 }
 
 
-  void _showProductDetails(BuildContext context, Map<String, dynamic> product) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: WidgetText(text: product['name'], fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.colorWhite, textAlign: TextAlign.center),
-        backgroundColor: AppColors.primaryColor,
-        content: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.8,  // Ancho de la ventana de diálogo
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.network(
-                product['image'],
-                height: 200,  // Tamaño de la imagen
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-              SizedBox(height: 10),
-              WidgetText(text: 'Precio: ${product['price']}', fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.colorWhite, textAlign: TextAlign.center),
-              SizedBox(height: 10),
-              WidgetText(text: product['description'], fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.colorWhite, textAlign: TextAlign.center),
-            ],
-          ),
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),  // Bordes redondeados
-          side: BorderSide(
-            color: Colors.black,  // Color del borde
-            width: 1.25,  // Grosor del borde
-          ),
-        ),
-        actions: [
-          Center(
-            child: TextButton.icon(
-              onPressed: () {
-                final authProvider = Provider.of<AuthProvider>(context, listen: false);
-                if (authProvider.isAuthenticated) {
-                  // Añadir el producto al carrito
-                  Navigator.of(context).pop();
-                } else {
-                  // Mostrar el diálogo de autenticación
-                  _showAuthDialog(context);
-                }
-              },
-              icon: Icon(Icons.add_shopping_cart, color: AppColors.colorWhite),
-              label: WidgetText(text: 'Añadir al Carrito', fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.colorWhite, textAlign: TextAlign.center),
-              style: TextButton.styleFrom(
-                backgroundColor: AppColors.cartColor,
-              ),
-            ),
-          ),
-        ],
-      );
-    },
-  );
-}
