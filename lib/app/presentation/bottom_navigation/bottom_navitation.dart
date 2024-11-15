@@ -35,8 +35,8 @@ class _BottomNavigationState extends State<BottomNavitation> {
         backgroundColor: AppColors.primaryColor,
         centerTitle: true,
         title: Image.asset(
-          'assets/images/cuentame_logo_main.png', // Ruta de la imagen en tu proyecto
-          height: 115, // Ajusta el tamaño de la imagen según sea necesario
+          'assets/images/cuentame_logo_main.png', 
+          height: 115, 
         ),
       ),
       body: Container(
@@ -45,8 +45,8 @@ class _BottomNavigationState extends State<BottomNavitation> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              AppColors.backgroundcolor_1, // Amarillo oscuro
-              AppColors.backgroundcolor_2, // Amarillo claro
+              AppColors.backgroundcolor_1, 
+              AppColors.backgroundcolor_2, 
             ],
           ),
         ),

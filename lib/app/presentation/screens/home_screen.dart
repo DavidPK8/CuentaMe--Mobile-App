@@ -69,13 +69,13 @@ void _showProductDetails(BuildContext context, Map<String, dynamic> product) {
         title: WidgetText(text: product['name'], fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.colorWhite, textAlign: TextAlign.center),
         backgroundColor: AppColors.primaryColor,
         content: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.8,  // Ancho de la ventana de diálogo
+          width: MediaQuery.of(context).size.width * 0.8,  
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Image.network(
                 product['image'],
-                height: 300,  // Tamaño de la imagen
+                height: 300,  
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
@@ -87,10 +87,10 @@ void _showProductDetails(BuildContext context, Map<String, dynamic> product) {
           ),
         ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),  // Bordes redondeados
+          borderRadius: BorderRadius.circular(12),  
           side: const BorderSide(
-            color: Colors.black,  // Color del borde
-            width: 1.25,  // Grosor del borde
+            color: Colors.black,  
+            width: 1.25,  
           ),
         ),
         actions: [
@@ -140,14 +140,14 @@ void _showAuthDialog(BuildContext context) {
         ),
         actions: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween, // Distribuye los botones a los extremos
+            mainAxisAlignment: MainAxisAlignment.spaceBetween, 
             children: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop(); // Cierra el diálogo
+                  Navigator.of(context).pop(); 
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()), // Redirige a inicio de sesión
+                    MaterialPageRoute(builder: (context) => LoginScreen()), 
                   );
                 },
                 child: const Text(
@@ -157,10 +157,10 @@ void _showAuthDialog(BuildContext context) {
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop(); // Cierra el diálogo
+                  Navigator.of(context).pop(); 
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => RegisterScreen()), // Redirige a registrarse
+                    MaterialPageRoute(builder: (context) => RegisterScreen()), 
                   );
                 },
                 child: const Text(
