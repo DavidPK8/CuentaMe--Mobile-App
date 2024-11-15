@@ -8,8 +8,8 @@ import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   final List<Map<String, dynamic>> products = [
-    {'name': 'Producto 1', 'image': 'https://via.placeholder.com/150', 'price': '\$10', 'description': 'Descripcion del producto 1...'},
-    {'name': 'Producto 2', 'image': 'https://via.placeholder.com/150', 'price': '\$15', 'description': 'Descripcion del producto 2...'},
+    {'name': 'Producto 1', 'image': 'https://www.shutterstock.com/image-vector/cute-pikachu-face-characters-on-260nw-2450936679.jpg', 'price': '\$10', 'description': 'Descripcion del producto 1...'},
+    {'name': 'Producto 2', 'image': 'https://www.shutterstock.com/image-vector/cute-pikachu-face-characters-on-260nw-2450936679.jpg', 'price': '\$15', 'description': 'Descripcion del producto 2...'},
   ];
 
   HomeScreen({super.key});

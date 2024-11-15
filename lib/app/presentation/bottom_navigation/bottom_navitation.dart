@@ -1,4 +1,4 @@
-import 'package:cuentame_tesis/decorations/app_colors.dart';
+import 'package:cuentame_tesis/app/decorations/app_colors.dart';
 import 'package:flutter/material.dart';
 import '../screens/home_screen.dart';
 import '../screens/customize_product_screen.dart';
