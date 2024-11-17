@@ -1,4 +1,5 @@
 import 'package:cuentame_tesis/app/decorations/texts/widget_text.dart';
+import 'package:cuentame_tesis/app/presentation/screens/recover_password_screen.dart';
 import 'package:cuentame_tesis/authentication/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:cuentame_tesis/app/decorations/app_colors.dart';
@@ -142,7 +143,7 @@ class LoginScreen extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => RegisterScreen()),
+                                      builder: (context) => RecoverPasswordScreen()),
                                 );
                               },
                               child: const Padding(
