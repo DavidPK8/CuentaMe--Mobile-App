@@ -28,10 +28,18 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  badges: ^3.1.2
   cupertino_icons: ^1.0.6
   flutter:
     sdk: flutter
+  flutter_floating_bottom_bar: ^1.2.1+1
+  flutter_launcher_icons: ^0.14.1
+  flutter_onboarding_slider: ^1.0.11
+  flutter_svg: ^2.0.14
   provider: ^6.1.2
+  salomon_bottom_bar: ^3.3.2
+  shared_preferences: ^2.3.3
+  toastification: ^2.3.0
 
 dev_dependencies:
 
@@ -48,22 +56,50 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter packages.
 flutter:
+  uses-material-design: true
 
   assets:
     - assets/images/
+    - assets/fonts/
+    - assets/vectors/
+    - assets/icon/
 
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
-  uses-material-design: true
-  # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/assets-and-images/#resolution-aware
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/assets-and-images/#from-packages
+  fonts:
+    - family: HostGrotesk
+      fonts:
+        - asset: assets/fonts/Host_Grotesk/HostGrotesk-Italic.ttf
+          style: italic
+        - asset: assets/fonts/Host_Grotesk/HostGrotesk-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Host_Grotesk/HostGrotesk-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Host_Grotesk/HostGrotesk-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Host_Grotesk/HostGrotesk-Semibold.ttf
+          weight: 600
+        - asset: assets/fonts/Host_Grotesk/HostGrotesk-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Host_Grotesk/HostGrotesk-ExtraBold.ttf
+          weight: 800
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins/Poppins-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/Poppins/Poppins-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Poppins/Poppins-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Poppins/Poppins-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Poppins/Poppins-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Poppins/Poppins-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Poppins/Poppins-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Poppins/Poppins-ExtraBold.ttf
+          weight: 800
+
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
