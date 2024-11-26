@@ -1,5 +1,5 @@
 import 'package:cuentame_tesis/theme/texts/TextTheme.dart';
-import 'package:cuentame_tesis/views/PageView.dart';
+import 'package:cuentame_tesis/views/Register/register.view.dart';
 import 'package:cuentame_tesis/views/onBoardingScreen/onBoardScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
           if (snapshot.data == true) {
             return const OnboardScreen();
           } else {
-            return const ComposePageView();
+            return const RegisterScreen();
           }
         },
       ),

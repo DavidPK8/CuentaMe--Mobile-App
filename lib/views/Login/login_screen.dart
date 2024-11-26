@@ -1,4 +1,4 @@
-import 'package:cuentame_tesis/views/User_Screens/register_screen.dart';
+import 'package:cuentame_tesis/views/Register/register.view.dart';
 import 'package:flutter/material.dart';
 
 import '../../theme/decorations/app_colors.dart';

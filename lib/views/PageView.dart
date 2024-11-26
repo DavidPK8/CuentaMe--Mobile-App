@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:cuentame_tesis/components/SalmonBottomNav.dart';
 import 'package:cuentame_tesis/theme/decorations/app_colors.dart';
-import 'package:cuentame_tesis/views/Basic_Views/cart_screen.dart';
-import 'package:cuentame_tesis/views/User_Screens/user_profile_screen.dart';
-import 'package:cuentame_tesis/views/Basic_Views/home_screen.dart';
+import 'package:cuentame_tesis/views/Shopping%20Cart/cart_screen.dart';
+import 'package:cuentame_tesis/views/Profile/user_profile_screen.dart';
+import 'package:cuentame_tesis/views/Home%20Screen/home_screen.dart';
 
 class ComposePageView extends StatefulWidget {
   const ComposePageView({super.key});
@@ -18,8 +18,6 @@ class _ComposePageViewState extends State<ComposePageView> {
   int _currentIndex = 0;
   late List<Map<String, dynamic>> _shoppingList = [];
   late List<Widget> _pagesCompose;
-
-  bool _isBottomNavVisible = true; // Controlar la visibilidad del Bottom Nav
 
   @override
   void initState() {
@@ -56,48 +54,20 @@ class _ComposePageViewState extends State<ComposePageView> {
       bottom: true,
       child: Scaffold(
         extendBody: true,
-        body: NotificationListener<ScrollNotification>(
-          onNotification: (scrollNotification) {
-            if (scrollNotification is ScrollUpdateNotification) {
-              // Detectar si se hace scroll hacia abajo o hacia arriba
-              if (scrollNotification.scrollDelta! > 0) {
-                // Hacer scroll hacia abajo, ocultar BottomNav
-                if (_isBottomNavVisible) {
-                  setState(() {
-                    _isBottomNavVisible = false;
-                  });
-                }
-              } else if (scrollNotification.scrollDelta! < 0) {
-                // Hacer scroll hacia arriba, mostrar BottomNav
-                if (!_isBottomNavVisible) {
-                  setState(() {
-                    _isBottomNavVisible = true;
-                  });
-                }
-              }
-            }
-            return true; // Retornar true para evitar que el scroll se propague
+        body: PageView(
+          controller: _controller,
+          onPageChanged: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
           },
-          child: PageView(
-            controller: _controller,
-            onPageChanged: (index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-            children: _pagesCompose,
-          ),
+          children: _pagesCompose,
         ),
         floatingActionButton: _currentIndex == 3
             ? null
             : floatComposeCart(context),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        bottomNavigationBar: _isBottomNavVisible
-            ? Salmonbottomnav(
-          currentIndex: _currentIndex,
-          ontabChanged: onTabSelected,
-        )
-            : null,
+        bottomNavigationBar: Salmonbottomnav(currentIndex: _currentIndex, ontabChanged: onTabSelected)
       ),
     );
   }
