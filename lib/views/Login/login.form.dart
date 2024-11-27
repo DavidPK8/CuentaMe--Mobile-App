@@ -1,7 +1,7 @@
-import 'package:cuentame_tesis/theme/decorations/app_colors.dart';
 import 'package:cuentame_tesis/views/Login/login.controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -13,7 +13,7 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
 
   final LoginController _loginController = Get.put(LoginController());
-  final GlobalKey _loginKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _loginKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -24,9 +24,10 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         children: [
           emailInput(),
-          const SizedBox(height: 16,),
+          const SizedBox(height: 24,),
           passwordInput(),
-          const SizedBox(height: 24,)
+          const SizedBox(height: 24,),
+          submitButton(context)
         ],
       ),
     );
@@ -39,6 +40,10 @@ class _LoginFormState extends State<LoginForm> {
       decoration: const InputDecoration(
         hintText: "",
         labelText: "Correo electrónico",
+        labelStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 14
+        ),
         border: OutlineInputBorder(
           gapPadding: 5,
         ),
@@ -68,6 +73,10 @@ class _LoginFormState extends State<LoginForm> {
         decoration: InputDecoration(
           hintText: "",
           labelText: "Contraseña",
+          labelStyle: const TextStyle(
+            color: Colors.white,
+            fontSize: 14
+          ),
           border: const OutlineInputBorder(
             gapPadding: 5,
           ),
@@ -91,6 +100,41 @@ class _LoginFormState extends State<LoginForm> {
           return null;
         },
         style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.white),
+      ),
+    );
+  }
+
+  FilledButton submitButton(BuildContext context) {
+    return FilledButton(
+      onPressed: () {
+        if (_loginKey.currentState?.validate() ?? false) {
+          _loginController.loginCLiente(
+            correo: _emailController.text,
+            password: _passwordController.text,
+            context: context,
+            onSuccess: () {
+              // Abrir página apra verificación de OTP
+              showDialog(
+                  context: context,
+                  builder: (context){
+                    return const Dialog(
+                      child: Text("Sesión Iniciada"),
+                    );
+                  }
+              );
+            },
+          );
+        }
+      },
+      child: const Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(EvaIcons.log_in),
+          SizedBox(width: 12),
+          Text("Ingresar"),
+        ],
       ),
     );
   }

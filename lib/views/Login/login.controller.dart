@@ -21,7 +21,7 @@ class LoginController extends GetxController{
     required String correo,
     required String password,
     required BuildContext context,
-    required VoidCallback onSuccess
+    required VoidCallback onSuccess,
   }) async {
     if (correo.isEmpty || password.isEmpty){
       toastification.show(
