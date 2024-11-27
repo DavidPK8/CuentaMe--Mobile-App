@@ -3,11 +3,10 @@ import 'package:cuentame_tesis/model/user.model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ClienteService extends GetConnect {
+class LoginService extends GetConnect{
 
-  // Método para registrar cliente
-  Future<Response> registrarCliente(Cliente cliente) async {
-    const String endpoint = ApiRoutes.register; // Endpoint de la API (verifica que esté correcto)
+  Future<Response> loginCLiente(Cliente cliente) async{
+    const String endpoint = ApiRoutes.login;
 
     try {
       // Serializamos el cliente a JSON
@@ -38,5 +37,7 @@ class ClienteService extends GetConnect {
       debugPrint('Error en la solicitud: $e');
       return Response(statusCode: 500, statusText: "Error: $e", body: e.toString());
     }
+
   }
+
 }

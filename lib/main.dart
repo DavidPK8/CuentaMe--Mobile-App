@@ -1,21 +1,11 @@
 import 'package:cuentame_tesis/theme/texts/TextTheme.dart';
-import 'package:cuentame_tesis/views/Register/register.view.dart';
+import 'package:cuentame_tesis/views/Login/login_screen.dart';
 import 'package:cuentame_tesis/views/onBoardingScreen/onBoardScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'services/authentication/auth_provider.dart';
-
 void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
-      ],
-      child: const MyApp(),
-    ),
-  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -41,7 +31,7 @@ class MyApp extends StatelessWidget {
           if (snapshot.data == true) {
             return const OnboardScreen();
           } else {
-            return const RegisterScreen();
+            return const LoginScreen();
           }
         },
       ),
