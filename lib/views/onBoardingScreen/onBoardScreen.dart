@@ -108,11 +108,11 @@ class OnboardScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Espacio para la imagen (se maneja en la propiedad 'background' del OnBoardingSlider)
-          const SizedBox(height: 420),
+          const SizedBox(height: 350),
           Text(
             title,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.displayLarge?.copyWith(
+            style: Theme.of(context).textTheme.displaySmall?.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),

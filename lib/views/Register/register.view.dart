@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cuentame_tesis/theme/decorations/app_colors.dart';
 import 'package:cuentame_tesis/views/Login/login_screen.dart';
 import 'package:cuentame_tesis/views/Register/register.form.dart';
@@ -18,6 +16,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColors.primaryColor,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const LoginScreen()),
+              );
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: Colors.white,
+              size: 20,
+            ),
+          ),
+          title: Text("Regístrate", style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),),
+        ),
         resizeToAvoidBottomInset: true,
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
@@ -29,28 +44,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               headerCompose(context),
               const SizedBox(height: 32),
               composeBody(),
-              const SizedBox(height: 24),
+              const SizedBox(height: 18),
               loginAdd(context),
-            ],
-          ),
-        ),
-        bottomNavigationBar: BottomAppBar(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (_) => const LoginScreen()),
-                  );
-                },
-                icon: const Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  color: AppColors.primaryColor,
-                  size: 20,
-                ),
-              )
             ],
           ),
         ),
@@ -63,19 +58,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         children: [
-          Text("Regístrate",
-              style: Theme.of(context)
-                  .textTheme
-                  .displayMedium
-                  ?.copyWith(color: AppColors.primaryColor)
-          ),
-          const SizedBox(height: 32),
           Text(
             "Crea tu cuenta de forma gratuita y en pocos segundos.",
-            style: Theme.of(context).textTheme.labelLarge,
+            style: Theme.of(context).textTheme.headlineSmall,
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: 40),
           const RegisterForm()
         ],
       ),
@@ -85,7 +73,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
 Widget headerCompose(BuildContext context){
   return Container(
-    height: MediaQuery.of(context).size.width * 0.35,
+    height: MediaQuery.of(context).size.width * 0.25,
     width: MediaQuery.of(context).size.width,
     decoration: const BoxDecoration(
       color: AppColors.primaryColor,
@@ -96,18 +84,17 @@ Widget headerCompose(BuildContext context){
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Image.asset('assets/images/logo_basic.png', scale: 2.0,),
+        Image.asset('assets/images/logo_basic.png', scale: 2.5,),
         ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: Image.asset(
             'assets/images/gift_source_1.png',
-            width: 90,
+            width: 80,
             height: 125,
             fit: BoxFit.cover,
             alignment: const Alignment(0, -1),
           ),
         )
-
       ],
     ),
   );

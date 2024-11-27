@@ -37,6 +37,8 @@ dependencies:
   flutter_onboarding_slider: ^1.0.11
   flutter_search_bar: ^3.0.0
   flutter_svg: ^2.0.14
+  get: ^4.6.6
+  http: ^1.2.2
   icons_plus: ^5.0.0
   intl: ^0.20.0
   intl_translation: ^0.20.1

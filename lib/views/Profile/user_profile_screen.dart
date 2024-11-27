@@ -1,3 +1,4 @@
+import 'package:cuentame_tesis/views/Register/register.view.dart';
 import 'package:flutter/material.dart';
 
 class UserProfileScreen extends StatelessWidget {
@@ -5,8 +6,15 @@ class UserProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Perfil de Usuario', style: TextStyle(fontSize: 24)),
+    return Center(
+      child: ElevatedButton(
+          onPressed: (){
+            Navigator.push(
+                context, MaterialPageRoute(builder: (_) => const RegisterScreen())
+            );
+          },
+          child: Text("Registrarme")
+      ),
     );
   }
 }
