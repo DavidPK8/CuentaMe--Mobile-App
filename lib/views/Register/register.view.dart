@@ -1,5 +1,5 @@
 import 'package:cuentame_tesis/theme/decorations/app_colors.dart';
-import 'package:cuentame_tesis/views/Login/login_screen.dart';
+import 'package:cuentame_tesis/views/Login/login.view.dart';
 import 'package:cuentame_tesis/views/Register/register.form.dart';
 import 'package:flutter/material.dart';
 

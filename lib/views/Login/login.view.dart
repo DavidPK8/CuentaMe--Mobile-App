@@ -105,8 +105,21 @@ Widget resetPasswordButton(BuildContext context) {
     onPressed: () {
       showModalBottomSheet(
         context: context,
+        isScrollControlled: true, // Permite que el ModalBottomSheet se ajuste al teclado
+        backgroundColor: Colors.transparent, // Opcional: para personalizar bordes
         builder: (context) {
-          return const ResetPasswordView();
+          return Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+            ),
+            child: Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom, // Ajusta dinámicamente al teclado
+              ),
+              child: const ResetPasswordView(), // Tu vista para restablecer contraseña
+            ),
+          );
         },
       );
     },

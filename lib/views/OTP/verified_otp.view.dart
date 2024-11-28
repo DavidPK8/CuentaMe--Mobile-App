@@ -1,4 +1,4 @@
-import 'package:cuentame_tesis/views/Login/login_screen.dart';
+import 'package:cuentame_tesis/views/Login/login.view.dart';
 import 'package:flutter/material.dart';
 
 class VerifiedOtpView extends StatelessWidget {

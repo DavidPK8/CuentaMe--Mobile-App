@@ -1,4 +1,4 @@
-import 'package:cuentame_tesis/views/Login/login_screen.dart';
+import 'package:cuentame_tesis/views/Login/login.view.dart';
 import 'package:cuentame_tesis/views/OTP/otp.controller.dart';
 import 'package:cuentame_tesis/views/OTP/verified_otp.view.dart';
 import 'package:flutter/material.dart';
