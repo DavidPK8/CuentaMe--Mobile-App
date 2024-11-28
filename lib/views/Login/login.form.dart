@@ -38,7 +38,6 @@ class _LoginFormState extends State<LoginForm> {
       controller: _emailController,
       keyboardType: TextInputType.emailAddress,
       decoration: const InputDecoration(
-        hintText: "",
         labelText: "Correo electrónico",
         labelStyle: TextStyle(
             color: Colors.white,
@@ -89,6 +88,7 @@ class _LoginFormState extends State<LoginForm> {
               _loginController.isPasswordVisible.value
                   ? Icons.visibility_off_rounded
                   : Icons.visibility_rounded,
+              color: Colors.white,
             ),
             onPressed: _loginController.togglePasswordVisibility,
           ),
@@ -131,7 +131,7 @@ class _LoginFormState extends State<LoginForm> {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(EvaIcons.log_in),
+          Icon(EvaIcons.log_in, size: 20,),
           SizedBox(width: 12),
           Text("Ingresar"),
         ],

@@ -79,7 +79,7 @@ class LoginController extends GetxController{
           context: context,
           type: ToastificationType.error,
           title: const Text("Error de inicio de sesión"),
-          description: Text(response.body?['message'] ?? "Error desconocido."),
+          description: Text(response.body?['message'] ?? "Usuario y/o contraseña incorrectos"),
           alignment: Alignment.topCenter,
           autoCloseDuration: const Duration(seconds: 4),
           primaryColor: Colors.red,

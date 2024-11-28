@@ -16,7 +16,7 @@ class VerifiedOtpView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   composeCenter(context),
-                  Text("Tu cuenta ha sido verificada y activada exitosamente. Ingresa y descrubre los grandes detalles que tenemos para ofrecerte.", textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyLarge,),
+                  Text("Tu cuenta ha sido verificada y activada exitosamente. Ingresa y descubre los grandes detalles que tenemos para ofrecerte.", textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyLarge,),
                   const SizedBox(height: 24,),
                   FilledButton(
                       onPressed: (){
