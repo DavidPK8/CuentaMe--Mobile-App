@@ -1,3 +1,4 @@
+import 'package:cuentame_tesis/components/loadScreen.dart';
 import 'package:cuentame_tesis/model/user.model.dart';
 import 'package:cuentame_tesis/views/Reset%20Password/reset_password.fetch.dart';
 import 'package:flutter/material.dart';
@@ -49,14 +50,8 @@ class ResetPasswordController extends GetxController {
       final response = await _resetPasswordService.recuperarPassword(cliente);
 
       if (response.statusCode == 200) {
-        otp = response.body['otp'];  // Asumiendo que el OTP viene en la respuesta
-        _showSuccessDialog(
-          context,
-          "Correo enviado",
-          "Revisa tu bandeja de entrada para continuar con el proceso.",
-        );
 
-        await Future.delayed(const Duration(milliseconds: 300));
+        await Future.delayed(const Duration(milliseconds: 500));
 
         onSuccess();
 
@@ -90,9 +85,9 @@ class ResetPasswordController extends GetxController {
       final response = await _resetPasswordService.verificarOtp(otp);
 
       if (response.statusCode == 200) {
-        // Guardamos el OTP en el controlador solo cuando la verificación es exitosa
-        this.otp = otp;
-        print("OTP verificado y guardado: $otp");  // Asegúrate de que este print se ejecute.
+        // Aquí asumimos que el backend confirma la validez del OTP y retorna éxito.
+        this.otp = otp; // Guardamos el OTP validado
+        print("OTP verificado y almacenado: $otp");
 
         _showSuccessDialog(
           context,
@@ -101,8 +96,7 @@ class ResetPasswordController extends GetxController {
         );
 
         await Future.delayed(const Duration(seconds: 2));
-
-        onSuccess();  // Navegar o cambiar la UI según el flujo
+        onSuccess();
       } else {
         _showErrorDialog(
           context,
@@ -122,9 +116,12 @@ class ResetPasswordController extends GetxController {
     }
   }
 
+
   Future<void> cambiarContrasena({
     required String nuevaContrasena,
+    required String confirmContrasena,
     required BuildContext context,
+    required VoidCallback onSuccess
   }) async {
     if (nuevaContrasena.isEmpty || nuevaContrasena.length < 6) {
       _showToast(
@@ -139,10 +136,9 @@ class ResetPasswordController extends GetxController {
     isLoading.value = true;
 
     try {
-      // Debug: Imprimir el valor del OTP para verificar que está almacenado correctamente
-      print("OTP almacenado en cambiarContrasena: $otp");
+      print("OTP almacenado antes de cambiar contraseña: $otp");
 
-      // Verificamos que el OTP esté almacenado
+      // Verificar que el OTP esté disponible
       if (otp == null || otp!.isEmpty) {
         _showToast(
           context,
@@ -153,19 +149,22 @@ class ResetPasswordController extends GetxController {
         return;
       }
 
-      // Realizamos la solicitud de cambio de contraseña con el OTP verificado
-      final response = await _resetPasswordService.cambiarContrasena(otp!, nuevaContrasena);  // Enviamos el OTP almacenado
+      // Realizar la solicitud de cambio de contraseña
+      final response = await _resetPasswordService.cambiarContrasena(otp!, nuevaContrasena, confirmContrasena);
 
       if (response.statusCode == 200) {
-        _showSuccessDialog(
-          context,
-          "Contraseña actualizada",
-          "Tu contraseña ha sido cambiada exitosamente.",
-        );
 
-        await Future.delayed(const Duration(milliseconds: 300));
+       Navigator.pushReplacement(
+           context,
+          MaterialPageRoute(
+              builder: (context) => const Loadscreen(description: 'Espere mientras cambiamos su contraseña...')
+          )
+       );
 
-        Navigator.pop(context);
+        await Future.delayed(const Duration(milliseconds: 800));
+
+        onSuccess();
+
       } else {
         _showErrorDialog(
           context,
