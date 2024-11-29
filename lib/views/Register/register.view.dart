@@ -2,6 +2,7 @@ import 'package:cuentame_tesis/theme/decorations/app_colors.dart';
 import 'package:cuentame_tesis/views/Login/login.view.dart';
 import 'package:cuentame_tesis/views/Register/register.form.dart';
 import 'package:flutter/material.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -20,13 +21,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
           backgroundColor: AppColors.primaryColor,
           leading: IconButton(
             onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (_) => const LoginScreen()),
+              Navigator.pop(
+                context
               );
             },
             icon: const Icon(
-              Icons.arrow_back_ios_new_rounded,
+              EvaIcons.close_outline,
               color: Colors.white,
               size: 20,
             ),

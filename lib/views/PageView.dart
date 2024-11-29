@@ -50,25 +50,24 @@ class _ComposePageViewState extends State<ComposePageView> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      bottom: true,
-      child: Scaffold(
+    return Scaffold(
         extendBody: true,
-        body: PageView(
-          controller: _controller,
-          onPageChanged: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-          children: _pagesCompose,
+        body: SafeArea(
+          child: PageView(
+            controller: _controller,
+            onPageChanged: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            children: _pagesCompose,
+          ),
         ),
         floatingActionButton: _currentIndex == 3
             ? null
             : floatComposeCart(context),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         bottomNavigationBar: Salmonbottomnav(currentIndex: _currentIndex, ontabChanged: onTabSelected)
-      ),
     );
   }
 

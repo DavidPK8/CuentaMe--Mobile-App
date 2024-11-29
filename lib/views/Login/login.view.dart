@@ -1,7 +1,7 @@
 import 'package:cuentame_tesis/views/Login/login.form.dart';
-import 'package:cuentame_tesis/views/Register/register.view.dart';
 import 'package:cuentame_tesis/views/Reset%20Password/reset_password.view.dart';
 import 'package:flutter/material.dart';
+import 'package:icons_plus/icons_plus.dart';
 import '../../theme/decorations/app_colors.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -20,9 +20,9 @@ class LoginScreen extends StatelessWidget {
           ),
           leading: IconButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterScreen()));
+              Navigator.pop(context);
             },
-            icon: const Icon(Icons.arrow_back_ios_rounded, size: 18, color: Colors.white),
+            icon: const Icon(EvaIcons.close_outline, size: 18, color: Colors.white),
           ),
         ),
         body: Stack(
