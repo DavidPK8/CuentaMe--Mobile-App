@@ -47,6 +47,7 @@ dependencies:
   salomon_bottom_bar: ^3.3.2
   shared_preferences: ^2.3.3
   toastification: ^2.3.0
+  uni_links: ^0.5.1
 
 dev_dependencies:
 

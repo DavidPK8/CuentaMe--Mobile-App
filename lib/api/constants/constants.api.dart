@@ -11,9 +11,9 @@ class ApiRoutes{
   static const String  register = "$userEndpoint/registrarse";
   static const String  addAddress = "$userEndpoint/agregar-direccion";
   static const String  profile = "$userEndpoint/perfil";
-  static const String  forgotPassword = "$userEndpoint/recuperar-password";
-  static String verifyToken(String token) => "$userEndpoint/recuperar-password/$token";
-  static String changePasword(String token) => "$userEndpoint/nuevo-password/$token";
+  static const String  forgotPassword = "$userEndpoint/recuperar-contrasena";
+  static String verifyToken(String otp) => "$userEndpoint/recuperar-contrasena/otp/$otp";
+  static String changePasword(String otp) => "$userEndpoint/nuevo-contrasena/$otp";
   static const String  sendnewOTP = "$userEndpoint/enviar-otp";
   static const String  verifyOTP = "$userEndpoint/verificar-otp";
   static const String  logout = "$userEndpoint/logout";

@@ -1,4 +1,6 @@
 import 'package:cuentame_tesis/theme/decorations/app_colors.dart';
+import 'package:cuentame_tesis/views/Reset%20Password/changepassword.view.dart';
+import 'package:cuentame_tesis/views/Reset%20Password/reset_password.controller.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -13,6 +15,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
 
   final TextEditingController _emailController = TextEditingController();
   final GlobalKey<FormState> _resetKey = GlobalKey<FormState>();
+  final ResetPasswordController _resetPasswordController = ResetPasswordController();
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +95,13 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
     return FilledButton(
       onPressed: () {
         if (_resetKey.currentState?.validate() ?? false) {
-
+            _resetPasswordController.recuperarPassword(
+                correo: _emailController.text,
+                context: context,
+                onSuccess: ()async{
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ChangePasswordView()));
+                }
+            );
         }
       },
       child: Row(

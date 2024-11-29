@@ -1,4 +1,5 @@
 import 'package:cuentame_tesis/views/Login/login.form.dart';
+import 'package:cuentame_tesis/views/Register/register.view.dart';
 import 'package:cuentame_tesis/views/Reset%20Password/reset_password.view.dart';
 import 'package:flutter/material.dart';
 import '../../theme/decorations/app_colors.dart';
@@ -18,7 +19,9 @@ class LoginScreen extends StatelessWidget {
             style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
           ),
           leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterScreen()));
+            },
             icon: const Icon(Icons.arrow_back_ios_rounded, size: 18, color: Colors.white),
           ),
         ),
@@ -43,7 +46,7 @@ class LoginScreen extends StatelessWidget {
                       children: [
                         // HeaderCompose ocupa exactamente el 50% de la pantalla
                         SizedBox(
-                          height: constraints.maxHeight * 0.55,
+                          height: constraints.maxHeight * 0.45,
                           child: headerCompose(context),
                         ),
                         // FormCompose se ajusta al contenido

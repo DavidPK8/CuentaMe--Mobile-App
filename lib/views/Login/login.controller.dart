@@ -88,6 +88,8 @@ class LoginController extends GetxController{
           closeOnClick: true,
           pauseOnHover: false,
         );
+
+        onSuccess();
       }
     } catch (e) {
       debugPrint("Error al iniciar sesión: $e");
