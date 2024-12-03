@@ -4,18 +4,21 @@ import 'package:cuentame_tesis/views/Reset%20Password/reset_password.fetch.dart'
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toastification/toastification.dart';
+import 'package:cuentame_tesis/views/OTP/otp.controller.dart'; // Importamos OTPController
 
 class ResetPasswordController extends GetxController {
   final ResetPasswordService _resetPasswordService = ResetPasswordService();
+  final OTPController _otpControllerLogic = Get.put(OTPController()); // Instanciamos OTPController
   var isLoading = false.obs;
 
-  // Variable para almacenar el OTP recibido
-  String? otp;
+  // Variable para almacenar el OTP recibido como RxString
+  var otp = "".obs;
 
-  // Enviar correo de recuperación de contraseña (sin cambios)
+  // Enviar correo de recuperación de contraseña
   Future<void> recuperarPassword({
     required String correo,
-    required BuildContext context, required VoidCallback onSuccess,
+    required BuildContext context,
+    required VoidCallback onSuccess,
   }) async {
     if (correo.isEmpty) {
       _showToast(
@@ -50,7 +53,6 @@ class ResetPasswordController extends GetxController {
       final response = await _resetPasswordService.recuperarPassword(cliente);
 
       if (response.statusCode == 200) {
-
         await Future.delayed(const Duration(milliseconds: 500));
 
         onSuccess();
@@ -74,55 +76,15 @@ class ResetPasswordController extends GetxController {
     }
   }
 
-  Future<void> verificarOtp({
-    required String otp,
-    required BuildContext context,
-    required VoidCallback onSuccess,
-  }) async {
-    isLoading.value = true;
-
-    try {
-      final response = await _resetPasswordService.verificarOtp(otp);
-
-      if (response.statusCode == 200) {
-        // Aquí asumimos que el backend confirma la validez del OTP y retorna éxito.
-        this.otp = otp; // Guardamos el OTP validado
-        print("OTP verificado y almacenado: $otp");
-
-        _showSuccessDialog(
-          context,
-          "OTP válido",
-          "Continúa para restablecer tu contraseña.",
-        );
-
-        await Future.delayed(const Duration(seconds: 2));
-        onSuccess();
-      } else {
-        _showErrorDialog(
-          context,
-          "OTP inválido",
-          response.body['msg'] ?? "El OTP no es válido o ha expirado.",
-        );
-      }
-    } catch (e) {
-      _showToast(
-        context,
-        ToastificationType.error,
-        "Error inesperado",
-        e.toString(),
-      );
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-
+  // Cambiar la contraseña utilizando el OTP almacenado
   Future<void> cambiarContrasena({
     required String nuevaContrasena,
     required String confirmContrasena,
+    required String correo,
     required BuildContext context,
-    required VoidCallback onSuccess
+    required VoidCallback onSuccess,
   }) async {
+    // Comprobación básica para la nueva contraseña
     if (nuevaContrasena.isEmpty || nuevaContrasena.length < 6) {
       _showToast(
         context,
@@ -135,34 +97,22 @@ class ResetPasswordController extends GetxController {
 
     isLoading.value = true;
 
+    Cliente cliente = Cliente(
+        correo: correo,
+        nombre: '',
+        telefono: '',
+        password: ''
+    );
+
     try {
-      print("OTP almacenado antes de cambiar contraseña: $otp");
-
-      // Verificar que el OTP esté disponible
-      if (otp == null || otp!.isEmpty) {
-        _showToast(
-          context,
-          ToastificationType.error,
-          "OTP no verificado",
-          "Por favor, verifica el OTP antes de cambiar la contraseña.",
-        );
-        return;
-      }
-
-      // Realizar la solicitud de cambio de contraseña
-      final response = await _resetPasswordService.cambiarContrasena(otp!, nuevaContrasena, confirmContrasena);
+      // Realizar la solicitud de cambio de contraseña usando el OTP almacenado
+      final response = await _resetPasswordService.cambiarContrasena(
+        cliente.correo,
+        nuevaContrasena,
+        confirmContrasena,
+      );
 
       if (response.statusCode == 200) {
-
-       Navigator.pushReplacement(
-           context,
-          MaterialPageRoute(
-              builder: (context) => const Loadscreen(description: 'Espere mientras cambiamos su contraseña...')
-          )
-       );
-
-        await Future.delayed(const Duration(milliseconds: 800));
-
         onSuccess();
 
       } else {
@@ -184,7 +134,7 @@ class ResetPasswordController extends GetxController {
     }
   }
 
-  // Método para mostrar un Toast (sin cambios)
+  // Método para mostrar un Toast
   void _showToast(BuildContext context, ToastificationType type, String title, String description) {
     toastification.show(
       context: context,
@@ -201,29 +151,7 @@ class ResetPasswordController extends GetxController {
     );
   }
 
-  // Método para mostrar un diálogo de éxito (sin cambios)
-  void _showSuccessDialog(BuildContext context, String title, String message) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Icon(Icons.check_circle, color: Colors.green),
-          content: Text(
-            message,
-            textAlign: TextAlign.center,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text("Entendido"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  // Método para mostrar un diálogo de error (sin cambios)
+  // Método para mostrar un diálogo de error
   void _showErrorDialog(BuildContext context, String title, String message) {
     showDialog(
       context: context,

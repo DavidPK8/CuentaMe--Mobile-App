@@ -109,8 +109,8 @@ class RegisterController extends GetxController {
         toastification.show(
           context: context,
           type: ToastificationType.success,
-          title: const Text("Registro exitoso"),
-          description: const Text("El cliente ha sido registrado correctamente."),
+          title: const Text("Cliente creado exitosamente!"),
+          description: const Text("Ahora, activemos tu cuenta..."),
           alignment: Alignment.topCenter,
           autoCloseDuration: const Duration(seconds: 4),
           primaryColor: Colors.green,

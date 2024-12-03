@@ -57,11 +57,11 @@ class ResetPasswordService extends GetConnect {
   }
 
   // Cambiar la contraseña (similar al método anterior, pero usando OTP)
-  Future<Response> cambiarContrasena(String otp, String nuevaContrasena, String confirmContrasena) async {
-    final String endpoint = ApiRoutes.changePasword(otp);
+  Future<Response> cambiarContrasena(String correo, String nuevaContrasena, String confirmContrasena) async {
+    const String endpoint = ApiRoutes.changePasword;
 
     try {
-      final body = {"password": nuevaContrasena, "confirmpassword": confirmContrasena};
+      final body = {'correo': correo, "password": nuevaContrasena, "confirmpassword": confirmContrasena};
       final headers = {'Content-Type': 'application/json'};
 
       debugPrint('Enviando solicitud a $endpoint con $body');

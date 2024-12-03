@@ -13,7 +13,7 @@ class ApiRoutes{
   static const String  profile = "$userEndpoint/perfil";
   static const String  forgotPassword = "$userEndpoint/recuperar-contrasena";
   static String verifyToken(String otp) => "$userEndpoint/recuperar-contrasena/$otp";
-  static String changePasword(String otp) => "$userEndpoint/nueva-contrasena/$otp";
+  static const String changePasword = "$userEndpoint/nueva-contrasena";
   static const String  sendnewOTP = "$userEndpoint/enviar-otp";
   static const String  verifyOTP = "$userEndpoint/verificar-otp";
   static const String  logout = "$userEndpoint/logout";

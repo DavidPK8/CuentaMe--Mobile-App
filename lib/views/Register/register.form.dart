@@ -226,7 +226,7 @@ class _RegisterFormState extends State<RegisterForm> {
               // Abrir página apra verificación de OTP
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => OTPView(correo: _emailField.text)),
+                MaterialPageRoute(builder: (context) => OTPView(correo: _emailField.text, action: "verifyAccount",)),
               );
             },
           );

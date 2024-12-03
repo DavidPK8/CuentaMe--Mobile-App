@@ -1,5 +1,5 @@
 import 'package:cuentame_tesis/theme/decorations/app_colors.dart';
-import 'package:cuentame_tesis/views/Reset%20Password/changepassword.view.dart';
+import 'package:cuentame_tesis/views/OTP/otp.view.dart';
 import 'package:cuentame_tesis/views/Reset%20Password/reset_password.controller.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -95,13 +95,22 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
     return FilledButton(
       onPressed: () {
         if (_resetKey.currentState?.validate() ?? false) {
-            _resetPasswordController.recuperarPassword(
-                correo: _emailController.text,
-                context: context,
-                onSuccess: ()async{
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ChangePasswordView()));
-                }
-            );
+          _resetPasswordController.recuperarPassword(
+            correo: _emailController.text,
+            context: context,
+            onSuccess: () async {
+              // Aquí es donde se debería navegar explícitamente
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => OTPView(
+                    correo: _emailController.text,
+                    action: "resetPassword",
+                  ),
+                ),
+              );
+            },
+          );
         }
       },
       child: Row(
@@ -109,9 +118,12 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(EvaIcons.email_outline, size: 20,),
+          const Icon(EvaIcons.email_outline, size: 20),
           const SizedBox(width: 12),
-          Text("Solicitar correo de recuperación", style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.white),),
+          Text(
+            "Solicitar correo de recuperación",
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.white),
+          ),
         ],
       ),
     );

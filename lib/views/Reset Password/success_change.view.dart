@@ -15,7 +15,7 @@ class SuccessChangePassword extends StatelessWidget {
             left: 0,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(50),
-              child: Image.asset('assets/images/password_changed.png', scale: 1, width: 150, height: 400,),
+              child: Image.asset('assets/images/password_changed.png', scale: 1, width: 150, height: 350,),
             ),
           ),
           Positioned(

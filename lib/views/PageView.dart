@@ -1,3 +1,4 @@
+import 'package:cuentame_tesis/views/Categories/categories.view.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:cuentame_tesis/components/SalmonBottomNav.dart';
@@ -31,7 +32,7 @@ class _ComposePageViewState extends State<ComposePageView> {
           });
         },
       ),
-      const Center(child: Text("Catálogo", style: TextStyle(fontSize: 24))),
+      const CategoriesView(),
       const Center(child: Text("Ofertas", style: TextStyle(fontSize: 24))),
       const UserProfileScreen(),
     ];
@@ -41,20 +42,23 @@ class _ComposePageViewState extends State<ComposePageView> {
     setState(() {
       _currentIndex = index;
     });
-    _controller.animateToPage(
-      index,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
+    _controller.jumpToPage(index);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        extendBody: true,
-        body: SafeArea(
+      extendBody: true,
+      body: SafeArea(
+        child: NotificationListener<ScrollNotification>(
+          onNotification: (scrollNotification) {
+            // Bloquea cualquier evento de desplazamiento horizontal
+            return scrollNotification is ScrollUpdateNotification &&
+                scrollNotification.metrics.axis == Axis.horizontal;
+          },
           child: PageView(
             controller: _controller,
+            physics: const NeverScrollableScrollPhysics(), // Deshabilita el deslizamiento
             onPageChanged: (index) {
               setState(() {
                 _currentIndex = index;
@@ -63,11 +67,15 @@ class _ComposePageViewState extends State<ComposePageView> {
             children: _pagesCompose,
           ),
         ),
-        floatingActionButton: _currentIndex == 3
-            ? null
-            : floatComposeCart(context),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        bottomNavigationBar: Salmonbottomnav(currentIndex: _currentIndex, ontabChanged: onTabSelected)
+      ),
+      floatingActionButton: _currentIndex == 3
+          ? null
+          : floatComposeCart(context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      bottomNavigationBar: Salmonbottomnav(
+        currentIndex: _currentIndex,
+        ontabChanged: onTabSelected,
+      ),
     );
   }
 
@@ -81,10 +89,10 @@ class _ComposePageViewState extends State<ComposePageView> {
               context: context,
               builder: (context) {
                 return CartScreen(
-                  shoppingList: _shoppingList, // Debe ser List<Map<String, dynamic>>
+                  shoppingList: _shoppingList,
                   onUpdate: (updatedList) {
                     setState(() {
-                      _shoppingList = updatedList; // Actualiza con el tipo correcto
+                      _shoppingList = updatedList;
                     });
                   },
                 );
@@ -103,7 +111,7 @@ class _ComposePageViewState extends State<ComposePageView> {
             top: 5,
             child: badges.Badge(
               badgeContent: Text(
-                '${_shoppingList.length}', // Muestra la cantidad de productos
+                '${_shoppingList.length}',
                 style: const TextStyle(fontSize: 8, color: Colors.white),
               ),
             ),

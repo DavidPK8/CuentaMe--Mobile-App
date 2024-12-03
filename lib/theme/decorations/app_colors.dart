@@ -7,4 +7,5 @@ class AppColors {
   static const cartColor = Color(0xFF91cb3e);
   static const colorWhite = Colors.white;
   static const colorBlack = Colors.black;
+  static const cardColor = Color(0xffa596c5);
 }
