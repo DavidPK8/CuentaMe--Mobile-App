@@ -1,4 +1,6 @@
+import 'package:cuentame_tesis/utils/token.manager.dart';
 import 'package:cuentame_tesis/views/Categories/categories.view.dart';
+import 'package:cuentame_tesis/views/Offer%20View/offers.view.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:cuentame_tesis/components/SalmonBottomNav.dart';
@@ -19,6 +21,7 @@ class _ComposePageViewState extends State<ComposePageView> {
   int _currentIndex = 0;
   late List<Map<String, dynamic>> _shoppingList = [];
   late List<Widget> _pagesCompose;
+  final bool isLoggedIn = TokenManager().token.isNotEmpty;
 
   @override
   void initState() {
@@ -33,7 +36,7 @@ class _ComposePageViewState extends State<ComposePageView> {
         },
       ),
       const CategoriesView(),
-      const Center(child: Text("Ofertas", style: TextStyle(fontSize: 24))),
+      const OffersView(),
       const UserProfileScreen(),
     ];
   }
@@ -68,9 +71,9 @@ class _ComposePageViewState extends State<ComposePageView> {
           ),
         ),
       ),
-      floatingActionButton: _currentIndex == 3
+      floatingActionButton: isLoggedIn ? _currentIndex == 3
           ? null
-          : floatComposeCart(context),
+          : floatComposeCart(context) : const SizedBox.shrink(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: Salmonbottomnav(
         currentIndex: _currentIndex,

@@ -1,3 +1,4 @@
+import 'package:cuentame_tesis/views/Login/inlog.view.dart';
 import 'package:cuentame_tesis/views/Login/login.controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -113,15 +114,11 @@ class _LoginFormState extends State<LoginForm> {
             password: _passwordController.text,
             context: context,
             onSuccess: () {
+              // Obtener el nombre del cliente desde el controlador
+              String clienteNombre = _loginController.clienteNombre.value;
+
               // Abrir página apra verificación de OTP
-              showDialog(
-                  context: context,
-                  builder: (context){
-                    return const Dialog(
-                      child: Text("Sesión Iniciada"),
-                    );
-                  }
-              );
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => InlogView(nombre: clienteNombre)));
             },
           );
         }

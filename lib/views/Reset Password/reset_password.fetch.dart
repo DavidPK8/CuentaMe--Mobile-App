@@ -31,31 +31,6 @@ class ResetPasswordService extends GetConnect {
     }
   }
 
-  // Verificar OTP (anteriormente verificarToken)
-  Future<Response> verificarOtp(String otp) async {
-    // Cambiamos al endpoint correcto para verificar el OTP
-    final String endpoint = ApiRoutes.verifyToken(otp);
-
-    try {
-      final headers = {'Content-Type': 'application/json'};
-
-      debugPrint('Enviando solicitud a $endpoint para verificar OTP.');
-
-      final response = await get(endpoint, headers: headers);
-
-      if (response.statusCode == 200) {
-        debugPrint('OTP verificado exitosamente.');
-      } else {
-        debugPrint('Error al verificar el OTP: ${response.statusCode} - ${response.statusText}');
-      }
-
-      return response;
-    } catch (e) {
-      debugPrint('Error en la solicitud verificarOtp: $e');
-      return Response(statusCode: 500, statusText: "Error: $e", body: e.toString());
-    }
-  }
-
   // Cambiar la contraseña (similar al método anterior, pero usando OTP)
   Future<Response> cambiarContrasena(String correo, String nuevaContrasena, String confirmContrasena) async {
     const String endpoint = ApiRoutes.changePasword;

@@ -3,14 +3,17 @@ import 'package:cuentame_tesis/views/Login/login.fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toastification/toastification.dart';
+import 'package:cuentame_tesis/utils/token.manager.dart'; // Ruta de la clase TokenManager
 
-class LoginController extends GetxController{
-
+class LoginController extends GetxController {
   final LoginService _loginService = LoginService();
 
   // Campos observables para manejar el estado
   var isLoading = false.obs;
   var isPasswordVisible = true.obs;
+
+  // Variable para almacenar el nombre del cliente
+  var clienteNombre = ''.obs;
 
   // Alternar visibilidad de contraseñas
   void togglePasswordVisibility() {
@@ -23,7 +26,7 @@ class LoginController extends GetxController{
     required BuildContext context,
     required VoidCallback onSuccess,
   }) async {
-    if (correo.isEmpty || password.isEmpty){
+    if (correo.isEmpty || password.isEmpty) {
       toastification.show(
         context: context,
         type: ToastificationType.warning,
@@ -40,8 +43,7 @@ class LoginController extends GetxController{
       return;
     }
 
-    // Verificar si el correo es válido (puedes hacerlo dentro de tu controlador)
-    if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zAolA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(correo)) {
+    if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(correo)) {
       toastification.show(
         context: context,
         type: ToastificationType.warning,
@@ -60,20 +62,35 @@ class LoginController extends GetxController{
 
     isLoading.value = true;
 
-    try{
-
+    try {
       final Cliente cliente = Cliente(
-          nombre: '',
-          correo: correo,
-          telefono: '',
-          password: password
+        nombre: '',
+        correo: correo,
+        telefono: '',
+        password: password,
       );
 
       final response = await _loginService.loginCLiente(cliente);
 
       if (response.statusCode == 200) {
         debugPrint("Inicio de sesión exitoso: ${response.body}");
-        onSuccess();
+
+        final usuario = response.body['usuario'];
+        final token = response.body['token'];
+
+        if (usuario != null && token != null) {
+          clienteNombre.value = usuario['nombre'] ?? 'Nombre no disponible';
+
+          // Asignar el token a través de TokenManager
+          TokenManager().token = token;
+
+          debugPrint("Nombre del cliente: ${clienteNombre.value}");
+          debugPrint("Token del cliente: ${TokenManager().token}");
+
+          onSuccess();
+        } else {
+          throw Exception("Usuario o token no encontrados en la respuesta.");
+        }
       } else {
         toastification.show(
           context: context,
@@ -88,8 +105,6 @@ class LoginController extends GetxController{
           closeOnClick: true,
           pauseOnHover: false,
         );
-
-        onSuccess();
       }
     } catch (e) {
       debugPrint("Error al iniciar sesión: $e");

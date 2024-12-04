@@ -1,4 +1,5 @@
 import 'package:cuentame_tesis/theme/decorations/app_colors.dart';
+import 'package:cuentame_tesis/utils/token.manager.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -7,11 +8,14 @@ class BoxesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final isLoggedIn = TokenManager().token.isNotEmpty;
+
     return SafeArea(
       child: Scaffold(
           body: Column(
             children: [
-              headerCompose(context)
+              headerCompose(context, isLoggedIn)
             ],
           )
       ),
@@ -19,7 +23,7 @@ class BoxesView extends StatelessWidget {
   }
 }
 
-Widget headerCompose(BuildContext context){
+Widget headerCompose(BuildContext context, bool isLoggedIn){
   return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.25,
@@ -40,6 +44,7 @@ Widget headerCompose(BuildContext context){
       ),
       child: Stack(
         children: [
+          isLoggedIn ?
           Positioned(
               right: 12,
               top: 12,
@@ -49,7 +54,9 @@ Widget headerCompose(BuildContext context){
                   },
                   icon: const Icon(EvaIcons.shopping_cart, color: AppColors.primaryColor, size: 22,)
               )
-          ),
+          )
+          :
+          const SizedBox.shrink(),
           Positioned(
               left: 12,
               top: 12,

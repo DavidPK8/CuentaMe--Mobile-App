@@ -1,5 +1,7 @@
 import 'package:cuentame_tesis/theme/decorations/app_colors.dart';
+import 'package:cuentame_tesis/utils/token.manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 class PersonalizedBoxesView extends StatelessWidget {
@@ -7,16 +9,28 @@ class PersonalizedBoxesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final bool isLoggedIn = TokenManager().token.isNotEmpty;
+    
     return SafeArea(
       child: Scaffold(
-          body: Column(
-            children: [
-              headerCompose(context)
-            ],
-          )
+          body: isLoggedIn ? composeSessionForm(context) : nonSessionPersonalizedBox(context)
       ),
     );
   }
+}
+
+Widget composeSessionForm(BuildContext context){
+  return SafeArea(
+    child: Scaffold(
+      body: Column(
+        children: [
+          headerCompose(context),
+          sessionedpersonalizedBox(context)
+        ],
+      ),
+    ),
+  );
 }
 
 Widget headerCompose(BuildContext context){
@@ -73,5 +87,53 @@ Widget headerCompose(BuildContext context){
           )
         ],
       )
+  );
+}
+
+Widget sessionedpersonalizedBox(BuildContext context){
+  return const Center(
+    child: Text("Personalizar"),
+  );
+}
+
+Widget nonSessionPersonalizedBox(BuildContext context) {
+  return SafeArea(
+    child: Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center, // Centra verticalmente el contenido principal
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Contenido principal
+          SvgPicture.asset('assets/vectors/undraw_empty_re_opql.svg', width: 300,),
+          const SizedBox(height: 30),
+          Text(
+            "¡Oh no! No puedes acceder a esta funcionalidad",
+            style: Theme.of(context).textTheme.headlineSmall,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 15),
+          Text(
+            "Inicia sesión para personalizar tus pedidos.",
+            style: Theme.of(context).textTheme.bodyMedium,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Row(
+            mainAxisSize: MainAxisSize.max, // Ajusta el tamaño del botón
+            children: [
+              Icon(Icons.arrow_back_rounded, size: 24),
+              SizedBox(width: 12),
+              Text("Regresar"),
+            ],
+          ),
+        ),
+      ),
+    ),
   );
 }

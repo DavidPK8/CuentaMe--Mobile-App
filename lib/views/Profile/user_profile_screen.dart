@@ -1,4 +1,6 @@
 import 'package:cuentame_tesis/theme/decorations/app_colors.dart';
+import 'package:cuentame_tesis/utils/token.manager.dart';
+import 'package:cuentame_tesis/views/Goodbye%20Screen/goodbye.view.dart';
 import 'package:cuentame_tesis/views/Login/login.view.dart';
 import 'package:cuentame_tesis/views/Register/register.view.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +12,11 @@ class UserProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Verificar si hay un token para decidir qué mostrar
+    final bool isLoggedIn = TokenManager().token.isNotEmpty;
+
     return Scaffold(
-      body: nonSessionProfileCompose(context)
+      body: isLoggedIn ? sessionProfileCompose(context) : nonSessionProfileCompose(context),
     );
   }
 }
@@ -19,25 +24,22 @@ class UserProfileScreen extends StatelessWidget {
 Widget nonSessionProfileCompose(BuildContext context) {
   return Stack(
     children: [
-      // Imagen de fondo anclada en la parte inferior
       Positioned(
         bottom: 0,
         left: 0,
         right: 0,
         child: SvgPicture.asset(
           'assets/vectors/undraw_gift_re_qr17.svg',
-          fit: BoxFit.contain, // Asegura que la imagen no se recorte
-          height: MediaQuery.of(context).size.height * 0.4, // Ajusta la altura
+          fit: BoxFit.contain,
+          height: MediaQuery.of(context).size.height * 0.4,
         ),
       ),
-      // Contenido principal en la parte superior
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Espaciador para empujar el contenido hacia arriba
             const SizedBox(height: 32),
             Text(
               "Inicia sesión para obtener una experiencia personalizada y conocer más sobre nuestros productos.",
@@ -91,21 +93,81 @@ Widget nonSessionProfileCompose(BuildContext context) {
   );
 }
 
-Widget pinItem(IconData icon, String text, BuildContext context){
+Widget pinItem(IconData icon, String text, BuildContext context) {
   return Column(
     children: [
       IconButton.filledTonal(
-          onPressed: null,
-          icon: Icon(icon, color: AppColors.primaryColor, size: 22,)
+        onPressed: null,
+        icon: Icon(
+          icon,
+          color: AppColors.primaryColor,
+          size: 22,
+        ),
       ),
-      const SizedBox(height: 8,),
-      Text(text, style: Theme.of(context).textTheme.bodySmall, textAlign: TextAlign.center,)
+      const SizedBox(height: 8),
+      Text(
+        text,
+        style: Theme.of(context).textTheme.bodySmall,
+        textAlign: TextAlign.center,
+      ),
     ],
   );
 }
 
-Widget sessionprofileCompose(){
-  return Column(
-    children: [],
+Widget sessionProfileCompose(BuildContext context) {
+  return Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Icon(
+          Icons.account_circle,
+          size: 120,
+          color: AppColors.primaryColor,
+        ),
+        const SizedBox(height: 16),
+        Text(
+          "¡Bienvenido de nuevo!",
+          style: Theme.of(context).textTheme.headlineMedium,
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 16),
+        FilledButton(
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (context){
+                  return AlertDialog(
+                    title: Text("Cerrar Sesión", style: Theme.of(context).textTheme.titleLarge?.copyWith(color: AppColors.primaryColor)),
+                    content: Text("¿Deseas cerrar tu sesión en esta aplicación?", style: Theme.of(context).textTheme.bodyLarge,),
+                    actions: [
+                      TextButton(
+                          onPressed: (){
+                            Navigator.pop(context);
+                          },
+                          child: const Text("Cancelar")
+                      ),
+                      FilledButton(
+                          onPressed: () {
+                            // Acción para cerrar sesión
+                            TokenManager().clearToken();
+
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => const GoodByeView()),
+                            );
+                          },
+                          child: const Text("Salir")
+                      )
+                    ],
+                  );
+                }
+            );
+          },
+          child: const Text("Cerrar sesión"),
+        ),
+      ],
+    ),
   );
 }
+
+
