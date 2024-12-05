@@ -2,6 +2,7 @@ import 'package:cuentame_tesis/theme/texts/TextTheme.dart';
 import 'package:cuentame_tesis/views/PageView.dart';
 import 'package:cuentame_tesis/views/onBoardingScreen/onBoardScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toastification/toastification.dart';
 
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ToastificationWrapper(
-      child: MaterialApp(
+      child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'CuentaMe',
         theme: AppTextTheme.getAppTheme(),

@@ -2,10 +2,7 @@
 
 import 'package:cuentame_tesis/theme/decorations/app_colors.dart';
 import 'package:cuentame_tesis/theme/texts/widget_text.dart';
-import 'package:intl/date_symbol_data_local.dart';
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -34,27 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
     {'name': 'Producto 2', 'image': 'https://www.shutterstock.com/image-vector/cute-pikachu-face-characters-on-260nw-2450936679.jpg', 'price': '\$15', 'description': 'Descripcion del producto 2...'},
   ];
 
-  late String formattedDate = '';  // Inicialización con valor vacío
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeDate();
-  }
-
-  Future<void> _initializeDate() async {
-    await initializeDateFormatting('es_ES', null);
-    DateTime now = DateTime.now();
-    String dayOfWeek = DateFormat('EEEE', 'es_ES').format(now);
-    String month = DateFormat('MMMM', 'es_ES').format(now);
-
-    setState(() {
-      formattedDate = '${_capitalize(dayOfWeek)}, ${now.day} de ${_capitalize(month)} ${now.year}';
-    });
-  }
-
-  String _capitalize(String input) => input[0].toUpperCase() + input.substring(1);
-
   @override
   Widget build(BuildContext context) {
 
@@ -77,11 +53,6 @@ class _HomeScreenState extends State<HomeScreen> {
             Text(
               "Bienvenido/a, usuario",
               style: Theme.of(context).textTheme.titleSmall,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              formattedDate.isEmpty ? 'Cargando fecha...' : formattedDate,
-              style: Theme.of(context).textTheme.labelSmall,
             ),
           ],
         ),
