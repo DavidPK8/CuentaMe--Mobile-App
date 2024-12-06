@@ -1,42 +1,30 @@
-import 'package:cuentame_tesis/utils/token.manager.dart';
+import 'dart:ui';
+import 'package:cuentame_tesis/views/Profile/user.fetch.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../api/constants/constants.api.dart';
+class ProfileController extends GetxController {
+  var isLoading = true.obs;
+  var profileData = {}.obs;
+  var addressList = <Map<String, dynamic>>[].obs; // Lista para almacenar las direcciones
 
-class ProfileService extends GetConnect {
-  ProfileService() {
-    httpClient.timeout = const Duration(seconds: 10);
+  @override
+  void onInit() {
+    super.onInit();
+    fetchProfile();
   }
 
-  // Método para obtener datos específicos del cliente
-  Future<Map<String, dynamic>?> profileCliente() async {
-    const String endpoint = ApiRoutes.profile;
-    final bearerToken = TokenManager().token;
-
+  void fetchProfile() async {
     try {
-      final response = await get(
-        endpoint,
-        headers: {
-          'Authorization': 'Bearer $bearerToken',
-          'Content-Type': 'application/json',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        // Extrae los campos necesarios
-        final perfil = response.body['perfil'];
-        return {
-          'nombre': perfil['nombre'],
-          'correo': perfil['correo'],
-          'telefono': perfil['telefono'],
-        };
-      } else {
-        print('Error al obtener el perfil: ${response.statusText}');
-        return null;
+      isLoading(true);
+      final data = await ProfileService().profileCliente();
+      if (data != null) {
+        profileData.value = data;
       }
     } catch (e) {
-      print('Excepción al obtener el perfil: $e');
-      return null;
+      Get.snackbar("Error", "No se pudo cargar el perfil");
+    } finally {
+      isLoading(false);
     }
   }
 }

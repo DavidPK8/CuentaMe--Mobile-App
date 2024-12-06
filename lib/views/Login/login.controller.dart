@@ -70,7 +70,7 @@ class LoginController extends GetxController {
         password: password,
       );
 
-      final response = await _loginService.loginCLiente(cliente);
+      final response = await _loginService.loginCliente(cliente);
 
       if (response.statusCode == 200) {
         debugPrint("Inicio de sesión exitoso: ${response.body}");

@@ -2,6 +2,7 @@ import 'package:cuentame_tesis/theme/decorations/app_colors.dart';
 import 'package:cuentame_tesis/utils/token.manager.dart';
 import 'package:cuentame_tesis/views/Goodbye%20Screen/goodbye.view.dart';
 import 'package:cuentame_tesis/views/Login/login.view.dart';
+import 'package:cuentame_tesis/views/Profile/options/Address/address.view.dart';
 import 'package:cuentame_tesis/views/Profile/options/about.view.dart';
 import 'package:cuentame_tesis/views/Profile/options/user.profile.view.dart';
 import 'package:cuentame_tesis/views/Register/register.view.dart';
@@ -23,12 +24,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   Widget build(BuildContext context) {
     final bool isLoggedIn = TokenManager().token.isNotEmpty;
 
-    return SafeArea(
-      child: Scaffold(
-        body: isLoggedIn
-            ? _sessionProfileCompose(context)
-            : _nonSessionProfileCompose(context),
-      ),
+    return Scaffold(
+      body: isLoggedIn
+          ? _sessionProfileCompose(context)
+          : _nonSessionProfileCompose(context),
     );
   }
 }
@@ -132,12 +131,12 @@ Widget _pinItem(IconData icon, String text, BuildContext context) {
 // ------------------------- Widget para usuarios autenticados --------------------------
 Widget _sessionProfileCompose(BuildContext context) {
   return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 18),
+    padding: const EdgeInsets.only(bottom: 24),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         _profileHeader(context),
-        const SizedBox(height: 40),
+        const SizedBox(height: 20),
         Expanded(
             child: _profileOptionsList(context)
         ),
@@ -173,30 +172,40 @@ String _capitalize(String input) => input[0].toUpperCase() + input.substring(1);
 Widget _profileHeader(BuildContext context) {
   String formattedDate = _getFormattedDate();
   String currentTime = _getFormattedTime();
-  return Column(
-    children: [
-      const Icon(
-        EvaIcons.gift_outline,
-        size: 80,
-        color: AppColors.primaryColor,
-      ),
-      const SizedBox(height: 16),
-      Text(
-        "¡Bienvenido de nuevo!",
-        style: Theme.of(context).textTheme.headlineMedium,
-        textAlign: TextAlign.center,
-      ),
-      const SizedBox(height: 16),
-      Text(
-        formattedDate.isEmpty ? 'Cargando fecha...' : formattedDate,
-        style: Theme.of(context).textTheme.labelMedium,
-      ),
-      const SizedBox(height: 16),
-      Text(
-        "última sesión: ${currentTime.isEmpty ? 'Cargando fecha...' : currentTime}" ,
-        style: Theme.of(context).textTheme.labelMedium,
-      ),
-    ],
+
+  return Container(
+    width: MediaQuery.of(context).size.width,  // Ajusta al ancho de la pantalla
+    decoration: const BoxDecoration(
+      color: AppColors.primaryColor,
+      borderRadius: BorderRadius.vertical(bottom: Radius.circular(14)),
+    ),
+    padding: const EdgeInsets.all(16),  // Ajusta el espacio interno
+    child: Column(
+      mainAxisSize: MainAxisSize.min,  // La columna se ajustará al tamaño de su contenido
+      children: [
+        const Icon(
+          EvaIcons.gift_outline,
+          size: 80,
+          color: Colors.white,
+        ),
+        const SizedBox(height: 16),
+        Text(
+          "¡Bienvenido de nuevo!",
+          style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Colors.white),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 16),
+        Text(
+          formattedDate.isEmpty ? 'Cargando fecha...' : formattedDate,
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.white),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          "última sesión: ${currentTime.isEmpty ? 'Cargando fecha...' : currentTime}",
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.white),
+        ),
+      ],
+    ),
   );
 }
 
@@ -215,8 +224,22 @@ Widget _profileOptionsList(BuildContext context) {
           );
         }
       ),
-      _listTileComposer(context, "Mis Direcciones", EvaIcons.pin_outline),
-      _listTileComposer(context, "Mis Pedidos", EvaIcons.shopping_bag_outline),
+      _listTileComposer(
+          context, "Mis Direcciones",
+          EvaIcons.pin_outline,
+          onTap: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const AddressView()),
+            );
+          }
+      ),
+      _listTileComposer(
+          context,
+          "Mis Pedidos",
+          EvaIcons.shopping_bag_outline,
+          onTap: (){}
+      ),
       _listTileComposer(
         context,
         "Acerca de la aplicación",

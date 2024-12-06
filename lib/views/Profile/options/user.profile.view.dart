@@ -1,5 +1,5 @@
 import 'package:cuentame_tesis/theme/decorations/app_colors.dart';
-import 'package:cuentame_tesis/views/Profile/user.fetch.dart';
+import 'package:cuentame_tesis/views/Profile/user.controller.dart';
 import 'package:cuentame_tesis/views/Reset%20Password/reset_password.controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

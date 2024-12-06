@@ -6,7 +6,7 @@ import 'package:badges/badges.dart' as badges;
 import 'package:cuentame_tesis/components/SalmonBottomNav.dart';
 import 'package:cuentame_tesis/theme/decorations/app_colors.dart';
 import 'package:cuentame_tesis/views/Shopping%20Cart/cart_screen.dart';
-import 'package:cuentame_tesis/views/Profile/user_profile_screen.dart';
+import 'package:cuentame_tesis/views/Profile/profile.screen.dart';
 import 'package:cuentame_tesis/views/Home%20Screen/home_screen.dart';
 
 class ComposePageView extends StatefulWidget {
