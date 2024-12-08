@@ -2,7 +2,7 @@ import 'package:cuentame_tesis/theme/decorations/app_colors.dart';
 import 'package:cuentame_tesis/views/Profile/options/Address/address.controller.dart';
 import 'package:cuentame_tesis/views/Profile/options/Address/address.view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -23,6 +23,9 @@ class _AddAddressViewState extends State<AddAddressView> {
   final _parroquiaController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  // Variable para el estado del switch (isDefault)
+  bool isDefault = false;
 
   // Inyectamos el controlador de direcciones
   final AddressController addressController = Get.put(AddressController());
@@ -191,7 +194,22 @@ class _AddAddressViewState extends State<AddAddressView> {
               return null;
             },
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 20),
+
+          // Switch para el campo isDefault
+          SwitchListTile(
+            title: const Text("¿Establecer dirección como predeterminada?"),
+            value: isDefault,
+            onChanged: (value) {
+              setState(() {
+                isDefault = value;
+              });
+            },
+            activeColor: AppColors.primaryColor,
+            controlAffinity: ListTileControlAffinity.leading,
+          ),
+
+          const SizedBox(height: 28),
           Obx(() {
             return Center(
               child: FilledButton(
@@ -206,6 +224,7 @@ class _AddAddressViewState extends State<AddAddressView> {
                       calleSecundaria: _calleSecundariaController.text,
                       numeroCasa: _numeroCasaController.text,
                       referencia: _referenciaController.text,
+                      isDefault: isDefault, // Pasamos el valor de isDefault
                       onSuccess: () {
                         delayedDialog(context);
                       },
@@ -238,7 +257,7 @@ class _AddAddressViewState extends State<AddAddressView> {
         actions: <Widget>[
           TextButton(
             onPressed: () {
-              Get.offAll(() => const AddressView());
+              Get.back();
             },
             child: const Text('Cerrar'),
           ),

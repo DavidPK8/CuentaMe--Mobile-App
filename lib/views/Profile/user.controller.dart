@@ -1,6 +1,4 @@
-import 'dart:ui';
 import 'package:cuentame_tesis/views/Profile/user.fetch.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProfileController extends GetxController {

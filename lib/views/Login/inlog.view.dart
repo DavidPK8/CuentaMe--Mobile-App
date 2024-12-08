@@ -1,7 +1,6 @@
 import 'package:cuentame_tesis/theme/decorations/app_colors.dart';
 import 'package:cuentame_tesis/views/PageView.dart';// Importa tu vista para agregar dirección
 import 'package:cuentame_tesis/views/Profile/user.controller.dart';
-import 'package:cuentame_tesis/views/Profile/user.fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:get/get.dart';

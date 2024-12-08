@@ -1,14 +1,11 @@
-import 'package:cuentame_tesis/components/loadScreen.dart';
 import 'package:cuentame_tesis/model/user.model.dart';
 import 'package:cuentame_tesis/views/Reset%20Password/reset_password.fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toastification/toastification.dart';
-import 'package:cuentame_tesis/views/OTP/otp.controller.dart'; // Importamos OTPController
 
 class ResetPasswordController extends GetxController {
   final ResetPasswordService _resetPasswordService = ResetPasswordService();
-  final OTPController _otpControllerLogic = Get.put(OTPController()); // Instanciamos OTPController
   var isLoading = false.obs;
 
   // Variable para almacenar el OTP recibido como RxString

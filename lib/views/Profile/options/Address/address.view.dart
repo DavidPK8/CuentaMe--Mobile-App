@@ -1,6 +1,7 @@
 import 'package:cuentame_tesis/theme/decorations/app_colors.dart';
 import 'package:cuentame_tesis/views/Address/add_address.view.dart';
 import 'package:cuentame_tesis/views/Profile/options/Address/address.controller.dart';
+import 'package:cuentame_tesis/views/Profile/options/Address/edit_address.view.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,8 +14,12 @@ class AddressView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AddressController addressController = Get.put(AddressController());
+
+    // Cargar direcciones al abrir la vista
+    addressController.fetchAddresses();
+
     final theme = Theme.of(context).textTheme;
-    final primaryColor = AppColors.primaryColor;
+    const primaryColor = AppColors.primaryColor;
 
     return Obx(() {
       return Scaffold(
@@ -35,8 +40,7 @@ class AddressView extends StatelessWidget {
               tooltip: "Recargar vista",
               icon: const Icon(Icons.refresh, color: Colors.white),
               onPressed: () async {
-                await addressController
-                    .fetchAddresses(); // Actualiza la vista
+                await addressController.fetchAddresses(); // Actualiza la vista
               },
             ),
           ]
@@ -59,7 +63,9 @@ class AddressView extends StatelessWidget {
           onRefresh: () async {
             await addressController.fetchAddresses(); // Refresca las direcciones
           },
-          child: addressController.addresses.isEmpty
+          child: addressController.isLoading.value
+              ? const Center(child: CircularProgressIndicator()) // Indicador de carga
+              : addressController.addresses.isEmpty
               ? LayoutBuilder(
             builder: (context, constraints) {
               return SingleChildScrollView(
@@ -76,9 +82,11 @@ class AddressView extends StatelessWidget {
             itemCount: addressController.addresses.length,
             itemBuilder: (context, index) {
               final address = addressController.addresses[index];
-              // Oscurecer gradualmente el color con cada tarjeta
               final cardColor = primaryColor
                   .withOpacity(1 - (index * 0.1).clamp(0, 1));
+
+              final direccionID = address['_id'];
+              final defaultAddress = address['isDefault'];
 
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12),
@@ -96,6 +104,7 @@ class AddressView extends StatelessWidget {
                     "Calle Principal: ${address['callePrincipal']}",
                     style: theme.bodyMedium?.copyWith(color: Colors.white70),
                   ),
+                  animateTrailing: true,
                   children: [
                     ListTile(
                       title: Text("Calle Secundaria: ",
@@ -121,13 +130,66 @@ class AddressView extends StatelessWidget {
                       subtitle: Text(address['referencia'],
                           style: theme.bodyMedium?.copyWith(color: Colors.white)),
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        // Estado predeterminado de la dirección
+                        defaultAddress == true ?
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(EvaIcons.heart, color: Colors.redAccent, size: 24,),
+                            const SizedBox(width: 12,),
+                            Text("Predeterminada", style: theme.labelSmall?.copyWith(color: Colors.white, fontWeight: FontWeight.w500),)
+                          ],
+                        )
+                            :
+                        const Icon(EvaIcons.heart_outline, size: 24, color: Colors.white),
+                        // Botón para actualizar la dirección
+                        IconButton(
+                          icon: const Icon(Icons.edit, color: Colors.blue),
+                          onPressed: () {
+                            Get.to(() => EditAddress(direccionID: direccionID));
+                          },
+                        ),
+
+                        // Botón para eliminar la dirección
+                        IconButton(
+                          icon: const Icon(Icons.delete, color: Colors.red),
+                          onPressed: () {
+                            Get.defaultDialog(
+                              title: "Eliminar dirección",
+                              middleText: "¿Estás seguro de que deseas eliminar esta dirección?",
+                              textCancel: "Cancelar",
+                              textConfirm: "Eliminar",
+                              confirmTextColor: Colors.white,
+                              onConfirm: () {
+                                addressController.deleteAddress(
+                                  direccionID: direccionID,
+                                  onSuccess: () {
+                                    Get.back(); // Cierra el diálogo tras el éxito
+                                    Get.snackbar(
+                                      "Éxito",
+                                      "La dirección ha sido eliminada",
+                                      snackPosition: SnackPosition.BOTTOM,
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ],
+                    )
                   ],
                 ),
               );
             },
           ),
         ),
-        // Este es el texto que estará en la parte inferior de la pantalla
         bottomNavigationBar: Visibility(
           visible: !addressController.isLoading.value, // Solo visible cuando no se está cargando
           child: Padding(

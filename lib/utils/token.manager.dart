@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 
 class TokenManager {
   static final TokenManager _instance = TokenManager._internal();
