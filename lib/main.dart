@@ -1,12 +1,20 @@
+import 'package:cuentame_tesis/theme/decorations/app_colors.dart';
 import 'package:cuentame_tesis/theme/texts/TextTheme.dart';
 import 'package:cuentame_tesis/views/PageView.dart';
 import 'package:cuentame_tesis/views/onBoardingScreen/onBoardScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toastification/toastification.dart';
 
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        systemNavigationBarColor: AppColors.primaryColor,
+        statusBarColor: AppColors.primaryColor,
+      )
+    );
   runApp(const MyApp());
 }
 

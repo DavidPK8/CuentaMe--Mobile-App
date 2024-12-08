@@ -78,7 +78,7 @@ class _CartScreenState extends State<CartScreen> {
                       onPressed: () => _removeItem(index),
                     ),
                   );*/
-                  return productCard(product: product);
+                  return ProductCard(product: product);
                 },
               ),
             ),
@@ -136,8 +136,8 @@ class _CartScreenState extends State<CartScreen> {
   }
 }
 
-class productCard extends StatelessWidget {
-  const productCard({
+class ProductCard extends StatelessWidget {
+  const ProductCard({
     super.key,
     required this.product,
   });
@@ -149,16 +149,18 @@ class productCard extends StatelessWidget {
     return Card(
       elevation: 5,
       child: Padding(
-        padding: const EdgeInsets.all(8.0), // Espaciado general dentro de la tarjeta
+        padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
             // Imagen
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Image.network(
-                product['image'],
+              child: product['image'] != null
+                  ? Image.network(
+                product['image'] ?? '',  // Imagen predeterminada en caso de null
                 scale: 2.5,
-              ),
+              )
+                  : const Icon(Icons.image_not_supported),  // Icono si no hay imagen
             ),
             // Texto y precio
             Expanded(
@@ -167,16 +169,16 @@ class productCard extends StatelessWidget {
                 children: [
                   // Nombre del producto
                   Text(
-                    product['name'],
+                    product['name'] ?? 'Producto sin nombre',  // Valor por defecto
                     style: Theme.of(context).textTheme.labelMedium,
-                    overflow: TextOverflow.ellipsis, // Manejo de texto largo
+                    overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 8),
                   // Descripción del producto
                   Text(
-                    product['description'],
+                    product['description'] ?? 'Descripción no disponible',  // Valor por defecto
                     style: Theme.of(context).textTheme.bodySmall,
-                    overflow: TextOverflow.ellipsis, // Manejo de texto largo
+                    overflow: TextOverflow.ellipsis,
                     maxLines: 2, // Limitar a 2 líneas
                   ),
                 ],
@@ -186,7 +188,7 @@ class productCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Text(
-                '${product['price']}',
+                product['price']?.toString() ?? 'Precio no disponible',  // Asegurar que no sea null
                 style: Theme.of(context).textTheme.bodyMedium,
                 textAlign: TextAlign.right,
               ),

@@ -5,6 +5,7 @@ class ApiRoutes{
 
   // User compose endpoint
   static const String userEndpoint = "$baseURL/user";
+  static const String BoxesEndpoint = "$baseURL/cajas_predefinidas";
 
   // User endpoints
   static const String  login = "$userEndpoint/login";
@@ -18,6 +19,11 @@ class ApiRoutes{
   static const String  sendnewOTP = "$userEndpoint/enviar-otp";
   static const String  verifyOTP = "$userEndpoint/verificar-otp";
   static const String  logout = "$userEndpoint/logout";
+  static const String  listBoxes = "$BoxesEndpoint/listar";
+
+  static String listBoxbyId(String boxId){
+    return "$BoxesEndpoint/listar/$boxId";
+  }
 
   String changeDefaultAddress(String id) {
     return "$userEndpoint/direccion/$id/predeterminada";

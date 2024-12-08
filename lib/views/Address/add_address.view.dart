@@ -1,6 +1,5 @@
 import 'package:cuentame_tesis/theme/decorations/app_colors.dart';
 import 'package:cuentame_tesis/views/Profile/options/Address/address.controller.dart';
-import 'package:cuentame_tesis/views/Profile/options/Address/address.view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';

@@ -109,7 +109,7 @@ class _LoginFormState extends State<LoginForm> {
     return FilledButton(
       onPressed: () {
         if (_loginKey.currentState?.validate() ?? false) {
-          _loginController.loginCLiente(
+          _loginController.loginCliente(
             correo: _emailController.text,
             password: _passwordController.text,
             context: context,

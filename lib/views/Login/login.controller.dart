@@ -20,7 +20,7 @@ class LoginController extends GetxController {
     isPasswordVisible.value = !isPasswordVisible.value;
   }
 
-  Future<void> loginCLiente({
+  Future<void> loginCliente({
     required String correo,
     required String password,
     required BuildContext context,
@@ -43,7 +43,7 @@ class LoginController extends GetxController {
       return;
     }
 
-    if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(correo)) {
+    if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zAZ]{2,}$').hasMatch(correo)) {
       toastification.show(
         context: context,
         type: ToastificationType.warning,
@@ -81,11 +81,14 @@ class LoginController extends GetxController {
         if (usuario != null && token != null) {
           clienteNombre.value = usuario['nombre'] ?? 'Nombre no disponible';
 
-          // Asignar el token a través de TokenManager
-          TokenManager().token = token;
+          // Guardar el nombre del usuario y el token en TokenManager
+          TokenManager().nombre = clienteNombre.value; // Guardar el nombre
+          TokenManager().token = token;  // Guardar el token
+          TokenManager().userId = usuario['userId'] ?? ''; // Guardar el userId si está disponible
 
           debugPrint("Nombre del cliente: ${clienteNombre.value}");
           debugPrint("Token del cliente: ${TokenManager().token}");
+          debugPrint("UserId del cliente: ${TokenManager().userId}");
 
           onSuccess();
         } else {

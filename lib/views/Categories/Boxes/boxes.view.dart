@@ -1,7 +1,11 @@
 import 'package:cuentame_tesis/theme/decorations/app_colors.dart';
 import 'package:cuentame_tesis/utils/token.manager.dart';
+import 'package:cuentame_tesis/views/Categories/Boxes/boxes.controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
+
+import '../../../model/boxes.model.dart';
 
 class BoxesView extends StatefulWidget {
   BoxesView({super.key});
@@ -11,57 +15,26 @@ class BoxesView extends StatefulWidget {
 }
 
 class _BoxesViewState extends State<BoxesView> {
-  // Lista de cajas con datos de ejemplo
-  List<Map<String, dynamic>> cajas = [
-    {
-      "nombre": "Caja de Dulces",
-      "descripcion": "Caja de chocolates, caramelos y bombones.",
-      "contenido": ["Chocolates", "Caramelos", "Bombones"],
-      "precio": 25.50,
-      "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVUjXOkKhssD0XLf0IZk8lkNYRGtnFq5-1VA&s",
-    },
-    {
-      "nombre": "Caja de Navidad",
-      "descripcion": "Caja de regalo con productos navideños.",
-      "contenido": ["Árbol de Navidad", "Taza navideña", "Galletas"],
-      "precio": 35.00,
-      "imagen": "https://i.pinimg.com/736x/61/58/44/6158449f20425f91701b51cac9fde28f.jpg",
-    },
-    {
-      "nombre": "Caja de Fiesta",
-      "descripcion": "Caja con artículos para una fiesta.",
-      "contenido": ["Globos", "Vasos", "Platos"],
-      "precio": 18.75,
-      "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgQ6F4yIbHkd12w-60_7u8vStS639uug4V6Q&s",
-    },
-    {
-      "nombre": "Caja de Sorpresas",
-      "descripcion": "Caja con diferentes productos de regalo sorpresa.",
-      "contenido": ["Juguetes", "Accesorios", "Artículos de papelería"],
-      "precio": 40.00,
-      "imagen": "https://i.pinimg.com/736x/20/00/ae/2000ae3c34959519c4c8f17df9e1356e.jpg",
-    },
-    {
-      "nombre": "Caja de Amor",
-      "descripcion": "Caja de regalo con productos para sorprender a tu ser querido.",
-      "contenido": ["Perfume", "Rosa", "Chocolates"],
-      "precio": 50.00,
-      "imagen": "https://i.pinimg.com/originals/3f/87/e1/3f87e1a525357e7e1f2cbd70ea30dcb4.jpg",
-    },
-  ];
+  final BoxesController _controller = Get.put(BoxesController());  // Usamos GetX para acceder al controlador
 
-  // Valor seleccionado del dropdown
+// Valor seleccionado del dropdown
   String selectedOrder = 'Nombre';
 
   // Función para ordenar los productos
   void ordenarProductos(String criterio) {
     setState(() {
       if (criterio == 'Nombre') {
-        cajas.sort((a, b) => a['nombre'].compareTo(b['nombre']));
+        _controller.cajas.sort((a, b) => a.nombre.compareTo(b.nombre));  // Ordenar por nombre
       } else if (criterio == 'Precio') {
-        cajas.sort((a, b) => a['precio'].compareTo(b['precio']));
+        _controller.cajas.sort((a, b) => a.precio.compareTo(b.precio));  // Ordenar por precio
       }
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.fetchBoxes();  // Llamamos a la función para obtener las cajas cuando la vista se carga
   }
 
   @override
@@ -97,7 +70,7 @@ class _BoxesViewState extends State<BoxesView> {
                         if (newValue != null) {
                           setState(() {
                             selectedOrder = newValue;
-                            ordenarProductos(selectedOrder);
+                            ordenarProductos(selectedOrder);  // Ordenar cajas según el criterio seleccionado
                           });
                         }
                       },
@@ -109,12 +82,24 @@ class _BoxesViewState extends State<BoxesView> {
             const SizedBox(height: 12),
             // ListView para mostrar las cajas
             Expanded(
-              child: ListView.builder(
-                itemCount: cajas.length,
-                itemBuilder: (context, index) {
-                  return CajaCard(caja: cajas[index]);
-                },
-              ),
+              child: Obx(() {
+                // Mostrar un indicador de carga mientras se obtienen las cajas
+                if (_controller.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                // Verifica si hay cajas y muestra las tarjetas
+                if (_controller.cajas.isEmpty) {
+                  return const Center(child: Text('No se encontraron cajas.'));
+                }
+
+                return ListView.builder(
+                  itemCount: _controller.cajas.length,
+                  itemBuilder: (context, index) {
+                    return CajaCard(caja: _controller.cajas[index]);
+                  },
+                );
+              }),
             ),
             const SizedBox(width: 25),
           ],
@@ -190,9 +175,8 @@ Widget headerCompose(BuildContext context, bool isLoggedIn) {
   );
 }
 
-// Widget para cada tarjeta de caja
 class CajaCard extends StatelessWidget {
-  final Map<String, dynamic> caja;
+  final Box caja;  // Cambiar a Box en lugar de Map<String, dynamic>
 
   const CajaCard({super.key, required this.caja});
 
@@ -218,11 +202,11 @@ class CajaCard extends StatelessWidget {
         child: Row(
           children: [
             Hero(
-              tag: caja['nombre'],
+              tag: caja.nombre,  // Usar nombre como tag
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.network(
-                  caja['imagen'],
+                  caja.imagen,
                   width: 100,
                   height: 100,
                   fit: BoxFit.cover,
@@ -236,12 +220,12 @@ class CajaCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      caja['nombre'],
+                      caja.nombre,
                       style: Theme.of(context).textTheme.labelMedium,
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      "\$${caja['precio'].toStringAsFixed(2)}",
+                      "\$${caja.precio.toStringAsFixed(2)}",  // Mostrar precio usando el objeto Box
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -257,9 +241,8 @@ class CajaCard extends StatelessWidget {
   }
 }
 
-// ModalBottomSheet con los detalles de la caja
 class CajaDetailModal extends StatefulWidget {
-  final Map<String, dynamic> caja;
+  final Box caja;  // Cambiar a Box en lugar de Map<String, dynamic>
 
   const CajaDetailModal({super.key, required this.caja});
 
@@ -273,7 +256,8 @@ class _CajaDetailModalState extends State<CajaDetailModal> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> contenido = widget.caja['contenido'];
+    // Cambiar a widget.caja.contenido si es una propiedad de Box
+    List<String> contenido = widget.caja.descripcion.split(','); // Cambiar si `contenido` está en otra propiedad
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -284,11 +268,11 @@ class _CajaDetailModalState extends State<CajaDetailModal> {
           children: [
             // Imagen de la caja
             Hero(
-              tag: widget.caja['nombre'],
+              tag: widget.caja.nombre,  // Usar el nombre de la caja como el tag
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
                 child: Image.network(
-                  widget.caja['imagen'],
+                  widget.caja.imagen,  // Usar la propiedad imagen de Box
                   height: 250,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -303,7 +287,7 @@ class _CajaDetailModalState extends State<CajaDetailModal> {
               children: [
                 Flexible(
                   child: Text(
-                    widget.caja['nombre'],
+                    widget.caja.nombre,  // Usar nombre de Box
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -311,7 +295,7 @@ class _CajaDetailModalState extends State<CajaDetailModal> {
                 ),
                 const SizedBox(width: 25),
                 Text(
-                  "\$${widget.caja['precio'].toStringAsFixed(2)}",
+                  "\$${widget.caja.precio.toStringAsFixed(2)}",  // Usar precio de Box
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: AppColors.primaryColor,
@@ -323,7 +307,7 @@ class _CajaDetailModalState extends State<CajaDetailModal> {
 
             // Descripción
             Text(
-              widget.caja['descripcion'],
+              widget.caja.descripcion,  // Usar descripción de Box
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.justify,
             ),
@@ -331,7 +315,7 @@ class _CajaDetailModalState extends State<CajaDetailModal> {
 
             // Contenido
             Text(
-              "Contenido:",
+              "Contenido:",  // Usar el contenido según sea necesario
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -346,7 +330,7 @@ class _CajaDetailModalState extends State<CajaDetailModal> {
                 return ListTile(
                   leading: const Icon(Icons.circle, size: 10, color: AppColors.primaryColor),
                   title: Text(
-                    contenido[index],
+                    contenido[index],  // Usar contenido de la descripción
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 );

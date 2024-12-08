@@ -172,6 +172,7 @@ String _capitalize(String input) => input[0].toUpperCase() + input.substring(1);
 Widget _profileHeader(BuildContext context) {
   String formattedDate = _getFormattedDate();
   String currentTime = _getFormattedTime();
+  String? nombreUsuario = TokenManager().nombre;
 
   return Container(
     width: MediaQuery.of(context).size.width,  // Ajusta al ancho de la pantalla
@@ -189,10 +190,12 @@ Widget _profileHeader(BuildContext context) {
           color: Colors.white,
         ),
         const SizedBox(height: 16),
-        Text(
-          "¡Bienvenido de nuevo!",
-          style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Colors.white),
-          textAlign: TextAlign.center,
+        Flexible(
+          child: Text(
+            "¡Bienvenido de nuevo, $nombreUsuario!",
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Colors.white),
+            textAlign: TextAlign.center,
+          ),
         ),
         const SizedBox(height: 16),
         Text(
@@ -223,16 +226,6 @@ Widget _profileOptionsList(BuildContext context) {
             MaterialPageRoute(builder: (context) => const UserDataView()),
           );
         }
-      ),
-      _listTileComposer(
-          context, "Mis Direcciones",
-          EvaIcons.pin_outline,
-          onTap: (){
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const AddressView()),
-            );
-          }
       ),
       _listTileComposer(
           context,
@@ -281,7 +274,7 @@ Widget _logoutButton(BuildContext context) {
               ),
               FilledButton(
                 onPressed: () {
-                  TokenManager().clearToken();
+                  TokenManager().clear();
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => const GoodByeView()),
