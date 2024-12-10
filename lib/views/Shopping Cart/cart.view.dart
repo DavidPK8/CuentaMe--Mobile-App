@@ -53,7 +53,7 @@ class CartScreen extends StatelessWidget {
 
   // Vista principal del carrito
   Widget buildCartView(BuildContext context) {
-    final CartController cartController = Get.find<CartController>(); // Usamos Get.find() para acceder al controlador
+    final CartController cartController = Get.put(CartController()); // Usamos Get.find() para acceder al controlador
 
     // Usamos un Obx() para reaccionar a los cambios en el carrito
     return Obx(() {
