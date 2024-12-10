@@ -68,6 +68,7 @@ class LoginController extends GetxController {
         correo: correo,
         telefono: '',
         password: password,
+        direccion: ''
       );
 
       final response = await _loginService.loginCliente(cliente);

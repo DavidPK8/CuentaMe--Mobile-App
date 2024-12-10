@@ -28,12 +28,12 @@ class RegisterController extends GetxController {
     required String correo,
     required String telefono,
     required String password,
-    String? direccion,
+    required String direccion,
     required BuildContext context,
     required VoidCallback onSuccess,// Contexto proporcionado desde la UI
   }) async {
     // Validar campos vacíos
-    if (nombre.isEmpty || correo.isEmpty || telefono.isEmpty || password.isEmpty) {
+    if (nombre.isEmpty || correo.isEmpty || telefono.isEmpty || password.isEmpty || direccion.isEmpty) {
       toastification.show(
         context: context,
         type: ToastificationType.warning,

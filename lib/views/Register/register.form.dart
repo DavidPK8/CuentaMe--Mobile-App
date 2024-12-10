@@ -20,6 +20,7 @@ class _RegisterFormState extends State<RegisterForm> {
   final TextEditingController _phoneField = TextEditingController();
   final TextEditingController _passwordField = TextEditingController();
   final TextEditingController _confirmPasswordField = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +36,8 @@ class _RegisterFormState extends State<RegisterForm> {
           emailInput(),
           const SizedBox(height: 16),
           phoneInput(),
+          const SizedBox(height: 16),
+          addressInput(),
           const SizedBox(height: 16),
           passwordInput(),
           const SizedBox(height: 16),
@@ -121,6 +124,33 @@ class _RegisterFormState extends State<RegisterForm> {
           return 'El teléfono no puede estar vacío';
         } else if (value.length < 10) {
           return 'Ingrese un número de teléfono válido';
+        }
+        return null;
+      },
+      style: Theme.of(context).textTheme.labelSmall,
+    );
+  }
+
+  TextFormField addressInput() {
+    return TextFormField(
+      controller: _addressController,
+      keyboardType: TextInputType.text,
+      decoration: const InputDecoration(
+        hintText: "",
+        labelText: "Dirección",
+        border: OutlineInputBorder(
+          gapPadding: 5,
+        ),
+        prefixIcon: Icon(
+          EvaIcons.pin_outline,
+          color: AppColors.primaryColor,
+        ),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'La dirección está vacia.';
+        } else if (value.length < 10) {
+          return 'Ingrese una dirección válida.';
         }
         return null;
       },
@@ -221,6 +251,7 @@ class _RegisterFormState extends State<RegisterForm> {
             correo: _emailField.text,
             telefono: _phoneField.text,
             password: _passwordField.text,
+            direccion: _addressController.text,
             context: context,
             onSuccess: () {
               // Abrir página apra verificación de OTP

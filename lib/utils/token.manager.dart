@@ -1,7 +1,7 @@
 class TokenManager {
   static final TokenManager _instance = TokenManager._internal();
 
-  String _token = '';
+  String token = '';
   String _userId = ''; // Propiedad para almacenar el userId
   String _nombre = ''; // Nueva propiedad para almacenar el nombre del usuario
   String? _boxId;
@@ -11,13 +11,6 @@ class TokenManager {
   }
 
   TokenManager._internal();
-
-  // Getters y setters para el token
-  String get token => _token;
-
-  set token(String newToken) {
-    _token = newToken;
-  }
 
   // Getters y setters para el userId
   String get userId => _userId;
@@ -35,13 +28,13 @@ class TokenManager {
 
   // Método para limpiar los datos de sesión
   void clear() {
-    _token = '';
+    token = '';
     _userId = '';
     _nombre = ''; // Limpiamos también el nombre
   }
 
   // Método para verificar si el usuario está logueado
-  bool isLoggedIn() => _token.isNotEmpty && _userId.isNotEmpty && _nombre.isNotEmpty;
+  bool isLoggedIn() => token.isNotEmpty && _userId.isNotEmpty && _nombre.isNotEmpty;
 
   // Método para obtener el ID de la caja almacenada
   String? getBoxId() {

@@ -89,7 +89,6 @@ class _ProductsViewState extends State<ProductsView> {
   @override
   Widget build(BuildContext context) {
     final bool isLoggedIn = TokenManager().token.isNotEmpty;
-    final CartController cardController = CartController();
 
     return SafeArea(
       child: Scaffold(

@@ -1,4 +1,3 @@
-import 'package:cuentame_tesis/model/boxes.model.dart';
 import 'package:cuentame_tesis/model/producto.model.dart';
 import 'package:cuentame_tesis/utils/token.manager.dart';
 import 'package:cuentame_tesis/views/Goodbye%20Screen/goodbye.view.dart';
@@ -77,14 +76,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void _showCajaDetails(BuildContext context, Producto producto) {
     final CartController cartController = Get.put(CartController());
 
-    // Verifica que el producto no sea nulo
-    if (producto == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error: Producto no disponible")),
-      );
-      return; // Salir si 'producto' es nulo
-    }
-
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -101,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Image.network(
-                  producto.imagen ?? 'https://via.placeholder.com/150',
+                  producto.imagen,
                   height: 200,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -116,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Flexible(
                   child: Text(
-                    producto.nombre ?? "Producto sin nombre",
+                    producto.nombre,
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -139,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
             // Descripción
             Text(
-              producto.descripcion ?? "Descripción no disponible",
+              producto.descripcion,
               textAlign: TextAlign.justify,
               style: const TextStyle(fontSize: 16),
             ),
@@ -206,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Expanded(
                             child: Image.network(
-                              producto.imagen ?? 'https://via.placeholder.com/150',
+                              producto.imagen,
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -215,7 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Column(
                               children: [
                                 Text(
-                                  producto.nombre ?? "Producto sin nombre",
+                                  producto.nombre,
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,

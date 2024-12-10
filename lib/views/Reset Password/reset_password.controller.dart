@@ -43,7 +43,8 @@ class ResetPasswordController extends GetxController {
         correo: correo,
         nombre: '',
         telefono: '',
-        password: ''
+        password: '',
+      direccion: ''
     );
 
     try {
@@ -98,7 +99,8 @@ class ResetPasswordController extends GetxController {
         correo: correo,
         nombre: '',
         telefono: '',
-        password: ''
+        password: '',
+      direccion: ''
     );
 
     try {

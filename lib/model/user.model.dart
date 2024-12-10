@@ -3,14 +3,14 @@ class Cliente {
   final String correo;
   final String telefono;
   final String password;
-  final String? direccion;
+  final String direccion;
 
   Cliente({
     required this.nombre,
     required this.correo,
     required this.telefono,
     required this.password,
-    this.direccion,
+    required this.direccion,
   });
 
   Map<String, dynamic> toJson() {

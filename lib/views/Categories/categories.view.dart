@@ -42,7 +42,7 @@ class CategoriesView extends StatelessWidget {
                 context,
                 "Cajas de regalo",
                 "assets/images/gifts_bg_2.png",
-                BoxesView(), // Ruta personalizada
+                const BoxesView(), // Ruta personalizada
               ),
             ),
           ),

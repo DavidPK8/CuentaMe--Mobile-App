@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cuentame_tesis/views/OTP/otp.fetch.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:toastification/toastification.dart';
@@ -55,10 +56,18 @@ class OTPController extends GetxController {
             "Error desconocido";
 
         // Log detallado para debugging
-        print("Error al verificar OTP:");
-        print("Estado: ${response.statusCode}");
-        print("Cuerpo: ${response.body}");
-        print("Headers: ${response.headers}");
+        if (kDebugMode) {
+          print("Error al verificar OTP:");
+        }
+        if (kDebugMode) {
+          print("Estado: ${response.statusCode}");
+        }
+        if (kDebugMode) {
+          print("Cuerpo: ${response.body}");
+        }
+        if (kDebugMode) {
+          print("Headers: ${response.headers}");
+        }
 
         _showToast(context, errorMessage.value);
       }
@@ -95,10 +104,18 @@ class OTPController extends GetxController {
             "Error desconocido";
 
         // Log detallado para debugging
-        print("Error al reenviar OTP:");
-        print("Estado: ${response.statusCode}");
-        print("Cuerpo: ${response.body}");
-        print("Headers: ${response.headers}");
+        if (kDebugMode) {
+          print("Error al reenviar OTP:");
+        }
+        if (kDebugMode) {
+          print("Estado: ${response.statusCode}");
+        }
+        if (kDebugMode) {
+          print("Cuerpo: ${response.body}");
+        }
+        if (kDebugMode) {
+          print("Headers: ${response.headers}");
+        }
 
         _showToast(context, errorMessage.value);
       }
@@ -121,7 +138,9 @@ class OTPController extends GetxController {
           : {};
       return decoded['msg'] as String?;
     } catch (e) {
-      print("Error al parsear mensaje de error: $e");
+      if (kDebugMode) {
+        print("Error al parsear mensaje de error: $e");
+      }
       return null;
     }
   }

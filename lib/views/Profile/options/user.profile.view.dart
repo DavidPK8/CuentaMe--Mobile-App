@@ -3,6 +3,7 @@ import 'package:cuentame_tesis/views/Profile/user.controller.dart';
 import 'package:cuentame_tesis/views/Reset%20Password/reset_password.controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 class UserDataView extends StatelessWidget {
   const UserDataView({super.key});
@@ -98,6 +99,13 @@ class UserDataView extends StatelessWidget {
                         data['telefono']?.toString() ?? 'N/A',
                         Icons.phone_android_rounded,
                       ),
+                      const Divider(),
+                      profileComposeDecorator(
+                          context,
+                          "Dirección",
+                          data['direccion'] ?? 'Sin dirección adjunta.',
+                          EvaIcons.pin
+                      )
                     ],
                   ),
                 ),
