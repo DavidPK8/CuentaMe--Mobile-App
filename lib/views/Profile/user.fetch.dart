@@ -39,35 +39,6 @@ class ProfileService extends GetConnect {
     }
   }
 
-  // Método para obtener direcciones del cliente
-  Future<List<Map<String, dynamic>>?> fetchAddresses() async {
-    const String endpoint = ApiRoutes.profile;
-    final bearerToken = TokenManager().token;
-
-    try {
-      final response = await get(
-        endpoint,
-        headers: {
-          'Authorization': 'Bearer $bearerToken',
-          'Content-Type': 'application/json',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        final direcciones = response.body['perfil']['direccion'] as List<dynamic>;
-        return direcciones.map((e) => e as Map<String, dynamic>).toList();
-      } else {
-        print('Error al obtener direcciones: ${response.statusText}');
-        return null;
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print('Excepción al obtener direcciones: $e');
-      }
-      return null;
-    }
-  }
-
   // Método para agregar una nueva dirección
   Future<Map<String, dynamic>?> addAddress(
       String callePrincipal,

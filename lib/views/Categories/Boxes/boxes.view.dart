@@ -1,32 +1,30 @@
 import 'package:cuentame_tesis/theme/decorations/app_colors.dart';
 import 'package:cuentame_tesis/utils/token.manager.dart';
 import 'package:cuentame_tesis/views/Categories/Boxes/boxes.controller.dart';
+import 'package:cuentame_tesis/views/Shopping%20Cart/cart.controller.dart';
+import 'package:cuentame_tesis/views/Shopping%20Cart/cart.view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
-
 import '../../../model/boxes.model.dart';
 
 class BoxesView extends StatefulWidget {
-  BoxesView({super.key});
+  const BoxesView({super.key});
 
   @override
   State<BoxesView> createState() => _BoxesViewState();
 }
 
 class _BoxesViewState extends State<BoxesView> {
-  final BoxesController _controller = Get.put(BoxesController());  // Usamos GetX para acceder al controlador
-
-// Valor seleccionado del dropdown
+  final BoxesController _controller = Get.put(BoxesController());
   String selectedOrder = 'Nombre';
 
-  // Función para ordenar los productos
   void ordenarProductos(String criterio) {
     setState(() {
       if (criterio == 'Nombre') {
-        _controller.cajas.sort((a, b) => a.nombre.compareTo(b.nombre));  // Ordenar por nombre
+        _controller.cajas.sort((a, b) => a.nombre.compareTo(b.nombre));
       } else if (criterio == 'Precio') {
-        _controller.cajas.sort((a, b) => a.precio.compareTo(b.precio));  // Ordenar por precio
+        _controller.cajas.sort((a, b) => a.precio.compareTo(b.precio));
       }
     });
   }
@@ -34,7 +32,7 @@ class _BoxesViewState extends State<BoxesView> {
   @override
   void initState() {
     super.initState();
-    _controller.fetchBoxes();  // Llamamos a la función para obtener las cajas cuando la vista se carga
+    _controller.fetchBoxes();
   }
 
   @override
@@ -70,7 +68,7 @@ class _BoxesViewState extends State<BoxesView> {
                         if (newValue != null) {
                           setState(() {
                             selectedOrder = newValue;
-                            ordenarProductos(selectedOrder);  // Ordenar cajas según el criterio seleccionado
+                            ordenarProductos(selectedOrder);
                           });
                         }
                       },
@@ -80,28 +78,24 @@ class _BoxesViewState extends State<BoxesView> {
               ),
             ),
             const SizedBox(height: 12),
-            // ListView para mostrar las cajas
             Expanded(
               child: Obx(() {
-                // Mostrar un indicador de carga mientras se obtienen las cajas
                 if (_controller.isLoading.value) {
                   return const Center(child: CircularProgressIndicator());
                 }
-
-                // Verifica si hay cajas y muestra las tarjetas
                 if (_controller.cajas.isEmpty) {
                   return const Center(child: Text('No se encontraron cajas.'));
                 }
-
                 return ListView.builder(
                   itemCount: _controller.cajas.length,
                   itemBuilder: (context, index) {
-                    return CajaCard(caja: _controller.cajas[index]);
+                    return CajaCard(
+                      caja: _controller.cajas[index],
+                    );
                   },
                 );
               }),
             ),
-            const SizedBox(width: 25),
           ],
         ),
       ),
@@ -109,7 +103,6 @@ class _BoxesViewState extends State<BoxesView> {
   }
 }
 
-// Header del screen
 Widget headerCompose(BuildContext context, bool isLoggedIn) {
   return Container(
     width: MediaQuery.of(context).size.width,
@@ -132,7 +125,18 @@ Widget headerCompose(BuildContext context, bool isLoggedIn) {
           right: 12,
           top: 12,
           child: IconButton.filledTonal(
-            onPressed: () {},
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return const CartScreen(); // Aquí mostramos el carrito como un bottom sheet
+                },
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                ),
+                isScrollControlled: true, // Permite que el contenido tenga un tamaño dinámico
+              );
+            },
             icon: const Icon(
               EvaIcons.shopping_cart,
               color: AppColors.primaryColor,
@@ -176,7 +180,7 @@ Widget headerCompose(BuildContext context, bool isLoggedIn) {
 }
 
 class CajaCard extends StatelessWidget {
-  final Box caja;  // Cambiar a Box en lugar de Map<String, dynamic>
+  final Box caja;
 
   const CajaCard({super.key, required this.caja});
 
@@ -184,12 +188,13 @@ class CajaCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Mostrar el ModalBottomSheet con los detalles de la caja
         showModalBottomSheet(
           context: context,
           isScrollControlled: true,
           builder: (context) {
-            return CajaDetailModal(caja: caja);
+            return CajaDetailModal(
+              caja: caja,
+            );
           },
         );
       },
@@ -202,7 +207,7 @@ class CajaCard extends StatelessWidget {
         child: Row(
           children: [
             Hero(
-              tag: caja.nombre,  // Usar nombre como tag
+              tag: caja.nombre,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.network(
@@ -225,7 +230,7 @@ class CajaCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      "\$${caja.precio.toStringAsFixed(2)}",  // Mostrar precio usando el objeto Box
+                      "\$${caja.precio.toStringAsFixed(2)}",
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -241,144 +246,94 @@ class CajaCard extends StatelessWidget {
   }
 }
 
-class CajaDetailModal extends StatefulWidget {
-  final Box caja;  // Cambiar a Box en lugar de Map<String, dynamic>
+class CajaDetailModal extends StatelessWidget {
+  final Box caja;
 
   const CajaDetailModal({super.key, required this.caja});
 
   @override
-  _CajaDetailModalState createState() => _CajaDetailModalState();
-}
-
-class _CajaDetailModalState extends State<CajaDetailModal> {
-  final bool isLoggedIn = TokenManager().token.isNotEmpty;
-  int cantidad = 1;
-
-  @override
   Widget build(BuildContext context) {
-    // Cambiar a widget.caja.contenido si es una propiedad de Box
-    List<String> contenido = widget.caja.descripcion.split(','); // Cambiar si `contenido` está en otra propiedad
+    // Usar Get.find para obtener la instancia del controlador CartController
+    final CartController cartController = Get.put(CartController());
+    final bool isLoggedIn = TokenManager().token.isNotEmpty;
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Imagen de la caja
-            Hero(
-              tag: widget.caja.nombre,  // Usar el nombre de la caja como el tag
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Image.network(
-                  widget.caja.imagen,  // Usar la propiedad imagen de Box
-                  height: 250,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Imagen del producto ajustada
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.network(
+              caja.imagen,
+              height: 200, // Aquí limitamos la altura de la imagen
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          // Precio del producto
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Título del producto
+              Flexible(
+                child: Text(
+                  caja.nombre,
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
                 ),
               ),
-            ),
-            const SizedBox(height: 16),
-
-            // Título y Precio
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  child: Text(
-                    widget.caja.nombre,  // Usar nombre de Box
-                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+              const SizedBox(width: 25),
+              Text(
+                "\$${caja.precio.toStringAsFixed(2)}",
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryColor, // Color verde para el precio
                 ),
-                const SizedBox(width: 25),
-                Text(
-                  "\$${widget.caja.precio.toStringAsFixed(2)}",  // Usar precio de Box
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 25),
-
-            // Descripción
-            Text(
-              widget.caja.descripcion,  // Usar descripción de Box
-              style: Theme.of(context).textTheme.bodyMedium,
-              textAlign: TextAlign.justify,
-            ),
-            const SizedBox(height: 16),
-
-            // Contenido
-            Text(
-              "Contenido:",  // Usar el contenido según sea necesario
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                textAlign: TextAlign.left,
               ),
-            ),
-            const SizedBox(height: 8),
-            ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: contenido.length,
-              separatorBuilder: (context, index) => const Divider(),
-              itemBuilder: (context, index) {
-                return ListTile(
-                  leading: const Icon(Icons.circle, size: 10, color: AppColors.primaryColor),
-                  title: Text(
-                    contenido[index],  // Usar contenido de la descripción
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                );
-              },
-            ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text("Descripción", style: Theme.of(context).textTheme.titleMedium, textAlign: TextAlign.start,),
 
-            const Divider(),
-
-            // Controles de cantidad y botón
-            isLoggedIn
-                ? Row(
-              children: [
-                IconButton(
-                  icon: const Icon(EvaIcons.minus),
+          const SizedBox(height: 12),
+          // Descripción
+          Text(
+            caja.descripcion, // Asumiendo que tienes una descripción en la caja
+            style: Theme.of(context).textTheme.bodyMedium,
+            textAlign: TextAlign.left,
+          ),
+          const SizedBox(height: 16),
+          const Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              isLoggedIn ?
+              FilledButton.tonal(
                   onPressed: () {
-                    if (cantidad > 1) {
-                      setState(() {
-                        cantidad--;
-                      });
-                    }
+                    cartController.addToCart(caja);  // Agregar al carrito
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("${caja.nombre} agregado al carrito")),
+                    );
                   },
-                ),
-                Text("$cantidad",
-                    style: Theme.of(context).textTheme.labelMedium),
-                IconButton(
-                  icon: const Icon(EvaIcons.plus),
-                  onPressed: () {
-                    setState(() {
-                      cantidad++;
-                    });
-                  },
-                ),
-                const Spacer(),
-                ElevatedButton(
-                  onPressed: () {
-                    // Lógica para agregar al carrito
-                  },
-                  child: const Text("Agregar al carrito"),
-                ),
-              ],
-            )
-                : Text(
-              "Para adquirir este producto, inicia sesión con tu cuenta.",
-              style: Theme.of(context).textTheme.bodyLarge,
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
+                  child: const Text("Agregar al carrito")
+              )
+                  :
+                  Flexible(
+                    child: Text("Para adquirir este producto, inicia sesión con tu cuenta.",
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      textAlign: TextAlign.center,),
+                  )
+            ],
+          )
+        ],
       ),
     );
   }

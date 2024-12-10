@@ -23,7 +23,7 @@ class Salmonbottomnav extends StatelessWidget {
         items: [
           SalomonBottomBarItem(icon: const Icon(Icons.home_rounded), title: const Text("Inicio")),
           SalomonBottomBarItem(icon: const Icon(Icons.list_rounded), title: const Text("Catálogo")),
-          SalomonBottomBarItem(icon: const Icon(Icons.local_offer_rounded), title: const Text("Ofertas")),
+          SalomonBottomBarItem(icon: const Icon(Icons.shopping_cart), title: const Text("Carrito")),
           SalomonBottomBarItem(icon: const Icon(Icons.person), title: const Text("Mi Cuenta")),
         ]
     );

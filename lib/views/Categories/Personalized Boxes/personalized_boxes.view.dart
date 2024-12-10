@@ -26,7 +26,7 @@ Widget composeSessionForm(BuildContext context){
       body: Column(
         children: [
           headerCompose(context),
-          sessionedpersonalizedBox(context)
+          Expanded(child: sessionedpersonalizedBox(context))
         ],
       ),
     ),
@@ -91,8 +91,21 @@ Widget headerCompose(BuildContext context){
 }
 
 Widget sessionedpersonalizedBox(BuildContext context){
-  return const Center(
-    child: Text("Personalizar"),
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
+    child: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          SvgPicture.asset('assets/vectors/undraw_bug_fixing_oc-7-a.svg', width: 250,),
+          const SizedBox(height: 50),
+          Text("Estamos en mantenimiento para darte una mejor experiencia.", style: Theme.of(context).textTheme.titleLarge, textAlign: TextAlign.center),
+          const SizedBox(height: 25,),
+          Text("Disculpa las molestias.", style: Theme.of(context).textTheme.bodyLarge,),
+        ],
+      )
+    ),
   );
 }
 

@@ -2,7 +2,6 @@ import 'package:cuentame_tesis/theme/decorations/app_colors.dart';
 import 'package:cuentame_tesis/utils/token.manager.dart';
 import 'package:cuentame_tesis/views/Goodbye%20Screen/goodbye.view.dart';
 import 'package:cuentame_tesis/views/Login/login.view.dart';
-import 'package:cuentame_tesis/views/Profile/options/Address/address.view.dart';
 import 'package:cuentame_tesis/views/Profile/options/about.view.dart';
 import 'package:cuentame_tesis/views/Profile/options/user.profile.view.dart';
 import 'package:cuentame_tesis/views/Register/register.view.dart';

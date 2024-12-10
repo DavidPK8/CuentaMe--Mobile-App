@@ -1,63 +1,64 @@
+import 'package:cuentame_tesis/model/producto.model.dart';
 import 'package:cuentame_tesis/theme/decorations/app_colors.dart';
 import 'package:cuentame_tesis/utils/token.manager.dart';
-import 'package:cuentame_tesis/views/Shopping%20Cart/cart_screen.dart';
+import 'package:cuentame_tesis/views/Shopping%20Cart/cart.controller.dart';
+import 'package:cuentame_tesis/views/Shopping%20Cart/cart.view.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 // Modelo de Producto (simulando los productos)
-List<Map<String, dynamic>> productos = [
-  {
-    "nombre": "Manicho 28gr",
-    "descripcion": "Chocolate con leche, en barra, relleno con trozos de mani.",
-    "precio": 0.50,
-    "imagen":
+final List<Producto> productos = [
+  Producto(
+    nombre: "Manicho 28gr",
+    descripcion: "Chocolate con leche, en barra, relleno con trozos de mani.",
+    stock: 100,
+    precio: 0.50,
+    imagen:
         "https://tofuu.getjusto.com/orioneat-prod/br23dyqs7cwsJdZTx-1012379.jpg",
-  },
-  {
-    "nombre": "Chocolates Bon O Bon (Caja x30)",
-    "descripcion":
+  ),
+  Producto(
+    nombre: "Chocolates Bon O Bon (Caja x30)",
+    descripcion:
         "Caja de bobones rellenos de avellana con cubierta de chocolate.",
-    "precio": 4.35,
-    "imagen":
+    stock: 200,
+    precio: 4.35,
+    imagen:
         "https://rosendoguaman.com.ec/wp-content/uploads/2020/05/7802225511513BONOBON30.png",
-  },
-  {
-    "nombre": "Capibara Musculoso",
-    "descripcion":
+  ),
+  Producto(
+    nombre: "Capibara Musculoso",
+    descripcion:
         "Peluche decorativo inspirado en el animal de moda mas tierno del mundo",
-    "precio": 15.99,
-    "imagen":
+    stock: 50,
+    precio: 15.99,
+    imagen:
         "https://kokostation.com/wp-content/uploads/capibara-musculoso.webp",
-  },
-  {
-    "nombre": "Flores tejidas",
-    "descripcion": "Flores tejidas en lana, con diferentes motivos y colores.",
-    "precio": 8.00,
-    "imagen":
+  ),
+  Producto(
+    nombre: "Flores tejidas",
+    descripcion: "Flores tejidas en lana, con diferentes motivos y colores.",
+    stock: 80,
+    precio: 8.00,
+    imagen:
         "https://m.media-amazon.com/images/I/71EZ6MycaOL._AC_UF894,1000_QL80_.jpg",
-  },
-  {
-    "nombre": "Lazos tejidos",
-    "descripcion": "Lazos tejidos en crochet con diferentes motivos y colores.",
-    "precio": 12.00,
-    "imagen":
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQnj8gXoq1qa3RG-oLwZgq7DnUUS4rIc2ocg&s",
-  },
-  {
-    "nombre": "Bombones surtidos Nestle",
-    "descripcion": "Funda de bombones surtidos de chocolate tradicional.",
-    "precio": 15.90,
-    "imagen":
-        "https://143367421.cdn6.editmysite.com/uploads/1/4/3/3/143367421/s560829077226483196_p223_i6_w2880.jpeg?width=2560",
-  },
-  {
-    "nombre": "Caja de bombones Ferrero Rocher",
-    "descripcion":
-        "Caja de chocolates Ferrero, de 300gr, con chocolates sutirdos con avellana y trozos de nuez.",
-    "precio": 7.00,
-    "imagen":
-        "https://www.ferrero.com/ladm/sites/ferrero_ladm/files/2023-07/frocher_box_circle_quality.jpg?t=1732621316",
-  }
+  ),
+  Producto(
+    nombre: "Caja de Dulces",
+    descripcion: "Caja de chocolates, caramelos y bombones.",
+    stock: 150,
+    precio: 25.50,
+    imagen:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVUjXOkKhssD0XLf0IZk8lkNYRGtnFq5-1VA&s",
+  ),
+  Producto(
+    nombre: "Caja de Amor",
+    descripcion:
+        "Caja de regalo con productos para sorprender a tu ser querido.",
+    stock: 60,
+    precio: 50.00,
+    imagen:
+        "https://i.pinimg.com/originals/3f/87/e1/3f87e1a525357e7e1f2cbd70ea30dcb4.jpg",
+  ),
 ];
 
 class ProductsView extends StatefulWidget {
@@ -69,15 +70,18 @@ class ProductsView extends StatefulWidget {
 
 class _ProductsViewState extends State<ProductsView> {
   String dropdownValue = 'Nombre';
-  List<Map<String, dynamic>> productosOrdenados = productos;
+  List<Producto> productosOrdenados =
+      productos; // Cambiado a lista de objetos Producto
 
   // Función para ordenar los productos
   void ordenarProductos(String criterio) {
     setState(() {
       if (criterio == 'Nombre') {
-        productosOrdenados.sort((a, b) => a['nombre'].compareTo(b['nombre']));
+        productosOrdenados
+            .sort((a, b) => a.nombre.compareTo(b.nombre)); // Ordenar por nombre
       } else if (criterio == 'Precio') {
-        productosOrdenados.sort((a, b) => a['precio'].compareTo(b['precio']));
+        productosOrdenados
+            .sort((a, b) => a.precio.compareTo(b.precio)); // Ordenar por precio
       }
     });
   }
@@ -85,6 +89,7 @@ class _ProductsViewState extends State<ProductsView> {
   @override
   Widget build(BuildContext context) {
     final bool isLoggedIn = TokenManager().token.isNotEmpty;
+    final CartController cardController = CartController();
 
     return SafeArea(
       child: Scaffold(
@@ -103,10 +108,7 @@ class _ProductsViewState extends State<ProductsView> {
                 children: [
                   Text(
                     "Ordenar por: ",
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .labelLarge,
+                    style: Theme.of(context).textTheme.labelLarge,
                   ),
                   const SizedBox(width: 25),
                   // Espacio entre el texto y el Dropdown
@@ -140,9 +142,9 @@ class _ProductsViewState extends State<ProductsView> {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: productos.length,
+                itemCount: productosOrdenados.length, // Usar productosOrdenados
                 itemBuilder: (context, index) {
-                  return ProductCard(producto: productos[index]);
+                  return ProductCard(producto: productosOrdenados[index]);
                 },
               ),
             ),
@@ -156,9 +158,7 @@ class _ProductsViewState extends State<ProductsView> {
   }
 }
 
-  Widget headerCompose(BuildContext context, bool isLoggedIn) {
-  late List<Map<String, dynamic>> _shoppingList = [];
-
+Widget headerCompose(BuildContext context, bool isLoggedIn) {
   return Container(
     width: MediaQuery.of(context).size.width,
     height: MediaQuery.of(context).size.height * 0.25,
@@ -182,13 +182,17 @@ class _ProductsViewState extends State<ProductsView> {
                 child: IconButton.filledTonal(
                   onPressed: () {
                     showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return CartScreen(
-                            shoppingList: _shoppingList,
-                            onUpdate: (ip) {},
-                          );
-                        });
+                      context: context,
+                      builder: (context) {
+                        return const CartScreen(); // Aquí mostramos el carrito como un bottom sheet
+                      },
+                      shape: const RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(20)),
+                      ),
+                      isScrollControlled:
+                          true, // Permite que el contenido tenga un tamaño dinámico
+                    );
                   },
                   icon: const Icon(
                     EvaIcons.shopping_cart,
@@ -232,9 +236,8 @@ class _ProductsViewState extends State<ProductsView> {
   );
 }
 
-// Widget para cada tarjeta de producto
 class ProductCard extends StatelessWidget {
-  final Map<String, dynamic> producto;
+  final Producto producto; // Cambiar tipo de Map a Producto
 
   const ProductCard({super.key, required this.producto});
 
@@ -242,11 +245,9 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Mostrar el ModalBottomSheet con los detalles del producto
         showModalBottomSheet(
           context: context,
-          isScrollControlled:
-              true, // Esto asegura que el modal se ajuste al contenido
+          isScrollControlled: true,
           builder: (context) {
             return ProductDetailModal(producto: producto);
           },
@@ -261,11 +262,11 @@ class ProductCard extends StatelessWidget {
         child: Row(
           children: [
             Hero(
-              tag: producto['nombre'],
+              tag: producto.nombre,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.network(
-                  producto['imagen'],
+                  producto.imagen,
                   width: 100,
                   height: 100,
                   fit: BoxFit.cover,
@@ -279,12 +280,12 @@ class ProductCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      producto['nombre'],
+                      producto.nombre,
                       style: Theme.of(context).textTheme.labelMedium,
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      "\$${producto['precio'].toStringAsFixed(2)}",
+                      "\$${producto.precio.toStringAsFixed(2)}",
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -300,9 +301,8 @@ class ProductCard extends StatelessWidget {
   }
 }
 
-// ModalBottomSheet con los detalles del producto
 class ProductDetailModal extends StatefulWidget {
-  final Map<String, dynamic> producto;
+  final Producto producto;
 
   const ProductDetailModal({super.key, required this.producto});
 
@@ -313,6 +313,7 @@ class ProductDetailModal extends StatefulWidget {
 class _ProductDetailModalState extends State<ProductDetailModal> {
   int cantidad = 1;
   final bool isLoggedIn = TokenManager().token.isNotEmpty;
+  final CartController cartController = CartController();
 
   @override
   Widget build(BuildContext context) {
@@ -322,13 +323,12 @@ class _ProductDetailModalState extends State<ProductDetailModal> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Imagen del producto
           Hero(
-            tag: widget.producto['nombre'],
+            tag: widget.producto.nombre,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(16),
               child: Image.network(
-                widget.producto['imagen'],
+                widget.producto.imagen,
                 height: 250,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -336,24 +336,20 @@ class _ProductDetailModalState extends State<ProductDetailModal> {
             ),
           ),
           const SizedBox(height: 16),
-
-          // Titulo y Precio juntos
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
                 child: Text(
-                  widget.producto['nombre'],
+                  widget.producto.nombre,
                   style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                 ),
               ),
-              const SizedBox(
-                width: 25,
-              ),
+              const SizedBox(width: 25),
               Text(
-                "\$${widget.producto['precio'].toStringAsFixed(2)}",
+                "\$${widget.producto.precio.toStringAsFixed(2)}",
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColors.primaryColor,
@@ -362,19 +358,13 @@ class _ProductDetailModalState extends State<ProductDetailModal> {
             ],
           ),
           const SizedBox(height: 25),
-
-          // Descripción del producto
           Text(
-            widget.producto['descripcion'],
+            widget.producto.descripcion,
             style: Theme.of(context).textTheme.bodyMedium,
             textAlign: TextAlign.justify,
           ),
           const SizedBox(height: 16),
-
-          // Divider entre la descripción y los botones
           const Divider(),
-
-          // Controles de cantidad y agregar al carrito
           isLoggedIn
               ? Row(
                   children: [
@@ -401,15 +391,20 @@ class _ProductDetailModalState extends State<ProductDetailModal> {
                     const Spacer(),
                     ElevatedButton(
                       onPressed: () {
-                        // Agregar al carrito
-                        // Aquí puedes agregar el producto al carrito con la cantidad seleccionada
+                        cartController
+                            .addToCart(widget.producto); // Agregar al carrito
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              content: Text(
+                                  "${widget.producto.nombre} agregado al carrito")),
+                        );
                       },
                       child: const Text("Agregar al carrito"),
                     ),
                   ],
                 )
               : Text(
-                  "Para adquirir este producto, inicia sesion con tu cuenta.",
+                  "Para adquirir este producto, inicia sesión con tu cuenta.",
                   style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 )
