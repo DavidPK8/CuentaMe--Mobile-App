@@ -1,3 +1,7 @@
+# Nota sobre los colaboradores del proyecto
+
+Debido a los cortes de luz que afectaron la continuidad en el presente trabajo, en algunas etapas del desarrollo del proyecto conté con el dispositivo de otro usuario para poder seguir con el desarrollo del proyecto. Su apoyo fue clave para garantizar el cumplimiento de los plazos establecidos y para mantener el avance del proyecto durante los momentos en los que no tuve acceso constante a los recursos necesarios. Agradezco profundamente su apoyo, que refleja el espíritu de colaboración y adaptabilidad frente a circunstancias imprevistas.
+
 # cuentame_tesis
 
 A new Flutter project.
